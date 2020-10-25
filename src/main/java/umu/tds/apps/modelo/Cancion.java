@@ -7,7 +7,11 @@ public class Cancion {
 	private String estilo;
 	private int numReproducciones;
 	
+	private int codigo;
 	
+	
+
+
 	public Cancion(String titulo, String rutaFichero, String interprete, String estilo, int numReproducciones) {
 		super();
 		this.titulo = titulo;
@@ -17,6 +21,14 @@ public class Cancion {
 		this.numReproducciones = numReproducciones;
 	}
 
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+	
 	public String getTitulo() {
 		return titulo;
 	}
