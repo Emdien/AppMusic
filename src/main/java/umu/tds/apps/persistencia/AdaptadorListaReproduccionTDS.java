@@ -54,6 +54,8 @@ public class AdaptadorListaReproduccionTDS implements IAdaptadorListaReproduccio
 		propiedades.add(new Propiedad("canciones", obtenerCodigosCanciones(listaRep.getCanciones())));
 		
 		
+		eListaRep.setPropiedades(propiedades);
+		
 		eListaRep = servPersistencia.registrarEntidad(eListaRep);
 		
 		listaRep.setCodigo(eListaRep.getId());

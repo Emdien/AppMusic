@@ -1,6 +1,7 @@
 package umu.tds.apps.modelo;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 public class Usuario {
 	
@@ -14,6 +15,9 @@ public class Usuario {
 	private String password;
 	private Boolean premium;
 	
+	private LinkedList<ListaReproduccion> listasReproduccion;
+	private LinkedList<Cancion> cancionesRecientes;
+	
 	public Usuario(String nombre, String apellidos, Date fechaNacimiento, String email, String username,
 			String password) {
 		super();
@@ -23,7 +27,10 @@ public class Usuario {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.codigo = 0;					// (Gonzalo): Randomizar?
+		this.codigo = 0;
+		
+		this.listasReproduccion = new LinkedList<ListaReproduccion>();
+		this.cancionesRecientes = new LinkedList<Cancion>();
 	}
 	
 	
@@ -31,6 +38,26 @@ public class Usuario {
 		return codigo;
 	}
 	
+	public LinkedList<ListaReproduccion> getListasReproduccion() {
+		return listasReproduccion;
+	}
+
+
+	public void setListasReproduccion(LinkedList<ListaReproduccion> listasReproduccion) {
+		this.listasReproduccion = listasReproduccion;
+	}
+
+
+	public LinkedList<Cancion> getCancionesRecientes() {
+		return cancionesRecientes;
+	}
+
+
+	public void setCancionesRecientes(LinkedList<Cancion> cancionesRecientes) {
+		this.cancionesRecientes = cancionesRecientes;
+	}
+
+
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
@@ -76,6 +103,18 @@ public class Usuario {
 	}
 	public void setPremium(Boolean premium) {
 		this.premium = premium;
+	}
+
+
+	public void addListaReproduccion(ListaReproduccion lr) {
+		this.listasReproduccion.add(lr);
+		
+	}
+
+
+	public void addCancionReciente(Cancion c) {
+		this.cancionesRecientes.add(c);
+		
 	}
 	
 	
