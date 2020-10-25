@@ -8,11 +8,13 @@ public abstract class FactoriaDAO {
 	
 	// (Gonzalo) Este método de obtener la instancia de la factoria para un tipo concreto
 	// en verdad no se usará, ya que solo disponemos de una factoria
+	// (Gonzalo) he modificado Class.forName().newInstance a .getDeclaredConstructor().newInstance()
+	// Ya que dicho metodo está deprecado. Hay que testear.
 	
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException {
 		if (unicaInstancia == null) 
 			try {
-				unicaInstancia = (FactoriaDAO) Class.forName(tipo).newInstance();
+				unicaInstancia = (FactoriaDAO) Class.forName(tipo).getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
 				throw new DAOException(e.getMessage());
 			}
@@ -29,7 +31,9 @@ public abstract class FactoriaDAO {
 	}
 	
 	
-	//TODO: Métodos factoria que devuelven adaptadores
-	
+	// Métodos factoria que devuelven adaptadores
+	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
+	public abstract IAdaptadorCancionDAO getCancionDAO();
+	public abstract IAdaptadorListaReproduccionDAO getListaReproduccionDAO();
 	
 }
