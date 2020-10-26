@@ -18,8 +18,8 @@ public class AdaptadorListaReproduccionTDS implements IAdaptadorListaReproduccio
 	private static AdaptadorListaReproduccionTDS unicaInstancia = null;
 	
 	public static AdaptadorListaReproduccionTDS getUnicaInstancia() {
-		if (unicaInstancia == null) return new AdaptadorListaReproduccionTDS();
-		else return unicaInstancia;
+		if (unicaInstancia == null) unicaInstancia = new AdaptadorListaReproduccionTDS();
+		return unicaInstancia;
 	}
 	
 	private AdaptadorListaReproduccionTDS() {

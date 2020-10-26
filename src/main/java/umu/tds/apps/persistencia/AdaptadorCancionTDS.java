@@ -17,8 +17,8 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO{
 	private static AdaptadorCancionTDS unicaInstancia = null;
 	
 	public static AdaptadorCancionTDS getUnicaInstancia() {
-		if (unicaInstancia == null) return new AdaptadorCancionTDS();
-		else return unicaInstancia;
+		if (unicaInstancia == null) unicaInstancia = new AdaptadorCancionTDS();
+		return unicaInstancia;
 	}
 	
 	private AdaptadorCancionTDS() {

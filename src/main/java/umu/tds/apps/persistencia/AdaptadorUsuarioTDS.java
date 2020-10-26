@@ -25,8 +25,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 	private SimpleDateFormat dateFormat;
 	
 	public static AdaptadorUsuarioTDS getUnicaInstancia() {
-		if (unicaInstancia == null) return new AdaptadorUsuarioTDS();
-		else return unicaInstancia;
+		if (unicaInstancia == null) unicaInstancia = new AdaptadorUsuarioTDS();
+		return unicaInstancia;
 	}
 	
 	private AdaptadorUsuarioTDS() {
