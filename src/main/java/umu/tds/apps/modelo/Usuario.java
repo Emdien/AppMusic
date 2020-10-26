@@ -13,13 +13,13 @@ public class Usuario {
 	private String email;
 	private String username;
 	private String password;
-	private Boolean premium;
+	private Boolean premium = false;
 	
 	private LinkedList<ListaReproduccion> listasReproduccion;
 	private LinkedList<Cancion> cancionesRecientes;
 	
 	public Usuario(String nombre, String apellidos, Date fechaNacimiento, String email, String username,
-			String password) {
+			String password, Boolean premium) {
 		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -28,7 +28,7 @@ public class Usuario {
 		this.username = username;
 		this.password = password;
 		this.codigo = 0;
-		
+		this.premium = premium;
 		this.listasReproduccion = new LinkedList<ListaReproduccion>();
 		this.cancionesRecientes = new LinkedList<Cancion>();
 	}

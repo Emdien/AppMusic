@@ -172,7 +172,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 			e.printStackTrace();
 		}
 		
-		Usuario usuario = new Usuario(nombre, apellidos, fechaNacimiento, email, username, password);
+		Usuario usuario = new Usuario(nombre, apellidos, fechaNacimiento, email, username, password, premium);
 		usuario.setCodigo(codigo);
 		
 		// Antes de llamar a otros adaptadores, hay que añadir el Usuario al PoolDAO
