@@ -64,8 +64,61 @@ public class ControladorAppMusic {
 		return true;
 	}
 	
+	// Método para Eliminar un Usuario
 	
+	public boolean borrarUsuario(Usuario user) {
+		
+		// Si no existe el usuario, no se procede
+		
+		if (catalogoUsuarios.getUsuario(user.getUsername()) == null) return false;
+		
+		adaptadorUsuario.borrarUsuario(user);
+		catalogoUsuarios.removeUsuario(user);
+		return true;
+		
+	}
 	
+	// Método para Obtener usuario actual (sesion)
+	
+	public Usuario getUsuarioActual() {
+		return this.usuarioActual;
+	}
+	
+	// Método para crear una Lista de reproduccion
+	
+	public boolean crearNuevaLista(String nombre) {
+		
+		// Primero delego en el usuario para que cree la lista
+		
+		ListaReproduccion lr = usuarioActual.crearLista(nombre);
+		
+		// Una vez creada, la persisto en la base de datos
+		
+		adaptadorListaReproduccion.registrarListaReproduccion(lr);
+		if (lr != null) return true;
+		return false;
+	}
+	
+	// Método para añadir una cancion a una Lista de reproduccion - Version (String, Cancion)
+	
+	public boolean addCancionToLista(String nombreLista, Cancion cancion) {
+		ListaReproduccion lr = usuarioActual.addCancioToLista(nombreLista, cancion);
+		
+		if (lr != null) {
+			adaptadorListaReproduccion.modificarListaReproduccion(lr);
+			return true;
+		}
+		return false;
+	}
+	
+	// Método para añadir una cancion a una Lista de reproduccion - Version (String, String)
+	
+	public boolean addCancionToLista(String nombreLista, String nombreCancion) {
+		
+		Cancion cancion = catalogoCanciones.getCancion(nombreCancion);
+		return addCancionToLista(nombreLista, cancion);
+		
+	}
 	
 	
 	// Método para inicializar los adaptadores

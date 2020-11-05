@@ -117,5 +117,25 @@ public class Usuario {
 		
 	}
 	
+	public ListaReproduccion crearLista(String nombre) {
+		ListaReproduccion lr = new ListaReproduccion(nombre);
+		addListaReproduccion(lr);
+		return lr;
+	}
+	
+	public ListaReproduccion addCancioToLista(String nombre, Cancion cancion) {
+		
+		ListaReproduccion listaR = null;
+		
+		for (ListaReproduccion lr : listasReproduccion) {
+			if (lr.getNombre().equals(nombre)) {
+				lr.addCancion(cancion);
+				listaR = lr;
+				break;
+			}	
+		}
+		return listaR;
+	}
+	
 	
 }
