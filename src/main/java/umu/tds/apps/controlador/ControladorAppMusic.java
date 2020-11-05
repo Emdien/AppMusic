@@ -249,7 +249,7 @@ public class ControladorAppMusic {
 		LinkedList<Cancion> recientes = usuarioActual.getCancionesRecientes();
 		
 		if (recientes.size() == MAX_RECIENTES) {		// Si hay ya 10 recientes (maximo)
-			recientes.removeFirst();		// Me elimina la menos reciente (la primera de la lista)
+			recientes.removeFirst();					// Me elimina la menos reciente (la primera de la lista)
 		}
 		
 		recientes.add(c);
@@ -259,11 +259,20 @@ public class ControladorAppMusic {
 	}
 	
 	// Metodo para mostrar las playlists del usuario
-	// Metodo para mostrar todas las canciones
+	
+	public List<ListaReproduccion> getAllListasReproduccion() {
+		return usuarioActual.getListasReproduccion();
+	}
+	
+	
 	// Metodo para imprimir en pdf
 
-	// Para los estilos, podría en el catalogo de canciones
-	// tener una lista de estilos presentes en las canciones.
+	public void printPDF() {
+		
+		// TODO
+		
+	}
+	
 
 	// Método para inicializar los adaptadores
 
