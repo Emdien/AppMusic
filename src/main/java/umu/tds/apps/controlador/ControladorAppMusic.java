@@ -78,7 +78,7 @@ public class ControladorAppMusic {
 		
 	}
 	
-	// Método para Obtener usuario actual (sesion)
+	// Método para Obtener usuario actual
 	
 	public Usuario getUsuarioActual() {
 		return this.usuarioActual;
@@ -119,6 +119,44 @@ public class ControladorAppMusic {
 		return addCancionToLista(nombreLista, cancion);
 		
 	}
+	
+	// Método para borrar una Lista de reproduccion - Version (String)
+	 
+	public boolean removeListaReproduccion(String nombre) {
+		
+		return usuarioActual.removeListaReproduccion(nombre);
+	}
+	
+	// Método para borrar una Lista de reproduccion - Version (ListaReproduccion)
+	
+	public boolean removeListaReproduccion(ListaReproduccion lr) {
+		return removeListaReproduccion(lr.getNombre());
+	}
+	
+	
+	// Metodo para añadir/cargar canciones
+	// Metodo para obtener todas las canciones
+	// Metodo para escuchar una cancion
+	// Metodo para buscar una cancion
+	// Metodo para hacerse premium
+		// Descuentos
+	// Metodo para mostrar canciones recientes
+	// Metodo para añadir una cancion reciente
+	// Metodo para mostrar las playlists del usuario
+	// Metodo para mostrar todas las canciones
+	// Metodo para imprimir en pdf
+	// Mas cosas
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	// Método para inicializar los adaptadores
