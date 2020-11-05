@@ -6,7 +6,10 @@ import umu.tds.apps.persistencia.IAdaptadorCancionDAO;
 import umu.tds.apps.persistencia.IAdaptadorListaReproduccionDAO;
 import umu.tds.apps.persistencia.IAdaptadorUsuarioDAO;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import umu.tds.apps.modelo.*;
 
@@ -22,6 +25,8 @@ public class ControladorAppMusic {
 	private CatalogoUsuarios catalogoUsuarios;
 	
 	private Usuario usuarioActual;			// Para mantener la sesion del usuario
+	private ListaReproduccion listaActual;	// Para mantener la lista seleccionada
+	private int index = 0;					// Posicion en la lista
 	
 	// Patron singleton
 	public static ControladorAppMusic getUnicaInstancia() {
@@ -85,24 +90,26 @@ public class ControladorAppMusic {
 	}
 	
 	// Método para crear una Lista de reproduccion
+	// Devuelvo una Lista a la Vista para que se utilice como parametro para otras operaciones
+	// La Vista no modificará directamente la Lista, si no que lo hará por medio del controlador
 	
-	public boolean crearNuevaLista(String nombre) {
+	public ListaReproduccion crearNuevaLista(String nombre) {
 		
-		// Primero delego en el usuario para que cree la lista
+		// Primero delego en el usuario para que cree la lista (o devuelva la lista con dicho nombre)
 		
 		ListaReproduccion lr = usuarioActual.crearLista(nombre);
 		
 		// Una vez creada, la persisto en la base de datos
+		// Si ya existe, no hace nada
 		
 		adaptadorListaReproduccion.registrarListaReproduccion(lr);
-		if (lr != null) return true;
-		return false;
+		return lr;
 	}
 	
 	// Método para añadir una cancion a una Lista de reproduccion - Version (String, Cancion)
 	
-	public boolean addCancionToLista(String nombreLista, Cancion cancion) {
-		ListaReproduccion lr = usuarioActual.addCancioToLista(nombreLista, cancion);
+	/*public boolean addCancionToLista(String nombreLista, Cancion cancion) {
+		ListaReproduccion lr = usuarioActual.addCancionToLista(nombreLista, cancion);
 		
 		if (lr != null) {
 			adaptadorListaReproduccion.modificarListaReproduccion(lr);
@@ -118,6 +125,16 @@ public class ControladorAppMusic {
 		Cancion cancion = catalogoCanciones.getCancion(nombreCancion);
 		return addCancionToLista(nombreLista, cancion);
 		
+	}*/
+	
+	// Metodo para añadir una cancion a una lista de reproduccion - Version (Lista, Cancion)
+	
+	public ListaReproduccion addCancionToLista(ListaReproduccion lr, Cancion cancion) {
+		
+		usuarioActual.addCancionToLista(lr, cancion);
+		adaptadorListaReproduccion.modificarListaReproduccion(lr);
+		
+		return lr;
 	}
 	
 	// Método para borrar una Lista de reproduccion - Version (String)
@@ -135,8 +152,49 @@ public class ControladorAppMusic {
 	
 	
 	// Metodo para añadir/cargar canciones
+	
+	public void loadCanciones() {
+	
+		// Metodo lee las canciones en la carpeta correspondiente
+		// Pasos a seguir:
+		// 1. Sacar los estilos (carpetas)
+		// 1.1 Guardo los estilos en un array de strings
+		// 2. Accedo a cada carpeta con el string guardado anteriormente
+		// 2.1 Leo el nombre del fichero
+		// 2.2 Separo los campos del nombre del fichero, y construyo el objeto Cancion
+		// 3. Añado la cancion a la persistencia
+		
+		ArrayList<String> estilos = new ArrayList<String>();
+		
+		String resourcePath = "./src/main/resources";
+		
+		File folder = new File(resourcePath);
+		for (File fileEntry : folder.listFiles()) {
+			estilos.add(fileEntry.getName());
+		}
+		
+		File songFolder;
+		
+		for (String estilo : estilos) {
+			songFolder = new File(resourcePath + "/"+ estilo);
+			for (File fileEntry : songFolder.listFiles())
+				loadCancionesInFolder(fileEntry, estilo);
+		}
+
+	}
+	
+	
 	// Metodo para obtener todas las canciones
+	
+	
+	public List<Cancion> getAllCanciones() {
+		return catalogoCanciones.getCanciones();
+	}
+	
 	// Metodo para escuchar una cancion
+	// Metodo para pausar una cancion
+	// Metodo para escuchar siguiente cancion
+	// Metodo para escuchar cancion anterior
 	// Metodo para buscar una cancion
 	// Metodo para hacerse premium
 		// Descuentos
@@ -145,7 +203,9 @@ public class ControladorAppMusic {
 	// Metodo para mostrar las playlists del usuario
 	// Metodo para mostrar todas las canciones
 	// Metodo para imprimir en pdf
-	// Mas cosas
+	
+	// Para los estilos, podría en el catalogo de canciones 
+	// tener una lista de estilos presentes en las canciones.
 	
 	
 	
@@ -179,9 +239,33 @@ public class ControladorAppMusic {
 	
 	private void inicializarCatalogos() {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
+
 		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
+		loadCanciones();
 		
 	}
+	
+	// Metodo para cargar una cancion a partir de un fichero
+	
+	private void loadCancionesInFolder(File archivo, String estilo) {
+		String[] split = archivo.getName().split("-");
+		String interpretes = split[0];
+		String titulo = split[1];
+		
+		
+		Cancion cancion = catalogoCanciones.getCancion(titulo);
+		
+		// Si no se encuentra en el catalogo (y por tanto en la BD) lo creo y añado a ambos
+		
+		if (cancion == null) {
+			cancion = new Cancion(titulo, archivo.getPath(), interpretes, estilo, 0);
+			catalogoCanciones.addCancion(cancion);
+			adaptadorCancion.registrarCancion(cancion);
+		}
+		
+		
+	}
+	
 	
 	
 	
