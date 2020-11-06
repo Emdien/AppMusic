@@ -7,6 +7,8 @@ import umu.tds.apps.persistencia.IAdaptadorListaReproduccionDAO;
 import umu.tds.apps.persistencia.IAdaptadorUsuarioDAO;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,6 +19,11 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import umu.tds.apps.modelo.*;
 import static java.util.stream.Collectors.*;
+import static java.util.Comparator.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class ControladorAppMusic {
 
@@ -73,19 +80,20 @@ public class ControladorAppMusic {
 		return true;
 	}
 
-	// Método para Eliminar un Usuario
+	// Método para hacer logout
 
-	public boolean borrarUsuario(Usuario user) {
-
-		// Si no existe el usuario, no se procede
-
-		if (catalogoUsuarios.getUsuario(user.getUsername()) == null)
-			return false;
-
-		adaptadorUsuario.borrarUsuario(user);
-		catalogoUsuarios.removeUsuario(user);
-		return true;
-
+	public void logout() {
+		
+		// Para guardar la informacion del usuario antes de cerrar sesion (por si acaso)
+		adaptadorUsuario.modificarUsuario(usuarioActual); 
+		
+		this.usuarioActual = null;	// Reinicio usuario
+		
+		if (mediaPlayer != null) {	// Paro el reproductor y lo elimino
+			mediaPlayer.stop();
+			mediaPlayer.dispose();
+		}
+		this.mediaPlayer = null;
 	}
 
 	// Método para Obtener usuario actual
@@ -139,7 +147,7 @@ public class ControladorAppMusic {
 		return false;
 	}
 
-	// Metodo para añadir/cargar canciones
+	// Metodo para añadir/cargar canciones		MODIFICAR
 
 	public void loadCanciones() {
 
@@ -215,7 +223,8 @@ public class ControladorAppMusic {
 			
 			mediaPlayer = new MediaPlayer(hit);
 			mediaPlayer.play();
-			c.setNumReproducciones(c.getNumReproducciones()+1);	
+			c.setNumReproducciones(c.getNumReproducciones()+1);
+			addCancionReciente(c);
 		}
 		else {		// Si ya se ha creado un MediaPlayer anteriormente (ya se ha escuchado alguna cancion)
 			if (mediaPlayer.getStatus() == Status.PAUSED) {
@@ -228,11 +237,14 @@ public class ControladorAppMusic {
 					mediaPlayer = new MediaPlayer(hit);
 					mediaPlayer.play();
 					c.setNumReproducciones(c.getNumReproducciones()+1);				// Cuando es una cancion distinta, incremento numero de reproducciones
+					addCancionReciente(c);
 				}
 			} else if (mediaPlayer.getStatus() == Status.PLAYING) {					// Si se cambia la cancion mientras que se esta escuchando otra
 				if (!mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo que la cancion no sea la misma
 					mediaPlayer = new MediaPlayer(hit);
 					mediaPlayer.play();
+					c.setNumReproducciones(c.getNumReproducciones()+1);
+					addCancionReciente(c);
 				}
 			}
 		}	
@@ -253,6 +265,8 @@ public class ControladorAppMusic {
 	// Metodo para buscar canciones con un filtro
 
 	public List<Cancion> buscarCanciones(String titulo, String interprete, String estilo) {
+		
+		loadCanciones();		// Busco canciones en la carpeta, en caso de que haya nuevas canciones.
 		
 		List<Cancion> lc = getAllCanciones();
 
@@ -277,6 +291,7 @@ public class ControladorAppMusic {
 		usuarioActual.setPremium(true);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
+	
 
 	// TODO Descuentos
 	
@@ -288,8 +303,9 @@ public class ControladorAppMusic {
 	}
 
 	// Metodo para añadir una cancion reciente
+	// Modificado a void, ya que la lista de recientes se obtiene con el metodo anterior.
 
-	public List<Cancion> addCancionReciente(Cancion c) {
+	public void addCancionReciente(Cancion c) {
 		LinkedList<Cancion> recientes = usuarioActual.getCancionesRecientes();
 
 		if (recientes.size() == MAX_RECIENTES) { // Si hay ya 10 recientes (maximo)
@@ -298,10 +314,10 @@ public class ControladorAppMusic {
 
 		usuarioActual.addCancionReciente(c);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		recientes = usuarioActual.getCancionesRecientes();		// Redundante?
+		//recientes = usuarioActual.getCancionesRecientes();		// Redundante?
 		
 
-		return recientes;
+		//return recientes;
 
 	}
 
@@ -311,20 +327,67 @@ public class ControladorAppMusic {
 		return usuarioActual.getListasReproduccion();
 	}
 
-	// Metodo para imprimir en pdf
+	// Metodo para imprimir en pdf las listas de reproduccion del usuario (Premium)
 
-	public void printPDF() {
-
-		// TODO
+	public void printPDF() throws DocumentException {
+		FileOutputStream archivo = null;
+		try {
+			archivo = new FileOutputStream("E:\\AppMusic\\" + usuarioActual.getNombre() + "_playlists.pdf");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		
+		List<ListaReproduccion> listasRep = usuarioActual.getListasReproduccion();
+		Document documento = new Document();
+		PdfWriter.getInstance(documento, archivo);
+		documento.open();
+		documento.add(new Paragraph("Listas de reproduccion del usuario" + usuarioActual.getNombre() +" "+ usuarioActual.getApellidos()));
+		documento.add(new Paragraph("======================================================"));
+		
+		for (ListaReproduccion lr : listasRep) {
+			documento.add(new Paragraph("Nombre de la lista: " + lr.getNombre()));
+			
+			for (Cancion c : lr.getCanciones()) {
+				documento.add(new Paragraph("Titulo: " + c.getTitulo() + "     Interpretes: " + c.getInterprete() + "     Estilo: " + c.getEstilo()));
+				
+			}
+			documento.add(new Paragraph("======================================================"));
+		}
+		documento.close();
+		
 
 	}
 	
+	// Metodo para obtener las 10 canciones mas reproducidas en la aplicacion (Premium)
 	
 	public List<Cancion> getCancionesMasReproducidas() {
 		
-		return null;
+		
+		// Hacer la comprobacion aqui de si es premium?
+		// Igual mejor hacer la comprobacion en la GUI
+		// De forma que si no es premium, no te deja pulsar el boton o la opcion(?)
+		
+		
+		List<Cancion> lc = catalogoCanciones.getCanciones();
+		
+		List<Cancion> masReproducidas = lc.stream()
+				.sorted(comparing(Cancion::getNumReproducciones).reversed())
+				.limit(10)
+				.collect(toList());
+		
+		return masReproducidas;
+		
 	}
+	
+	
+	
+	//======================================================================================
+	
 
+	
+	
 	// Método para inicializar los adaptadores
 
 	private void inicializarAdaptadores() {
