@@ -14,7 +14,7 @@ import java.util.List;
 import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
+import javafx.scene.media.MediaPlayer.Status;
 import umu.tds.apps.modelo.*;
 
 public class ControladorAppMusic {
@@ -28,8 +28,7 @@ public class ControladorAppMusic {
 	private CatalogoCanciones catalogoCanciones;
 	private CatalogoUsuarios catalogoUsuarios;
 
-	private Usuario usuarioActual; // Para mantener la sesion del usuario
-	private int index = 0; // Posicion en la lista
+	private Usuario usuarioActual; 
 	private MediaPlayer mediaPlayer;
 	private static final int MAX_RECIENTES = 10;
 
@@ -114,26 +113,7 @@ public class ControladorAppMusic {
 		return lr;
 	}
 
-	// Método para añadir una cancion a una Lista de reproduccion - Version (String,
-	// Cancion)
 
-	/*
-	 * public boolean addCancionToLista(String nombreLista, Cancion cancion) {
-	 * ListaReproduccion lr = usuarioActual.addCancionToLista(nombreLista, cancion);
-	 * 
-	 * if (lr != null) { adaptadorListaReproduccion.modificarListaReproduccion(lr);
-	 * return true; } return false; }
-	 * 
-	 * // Método para añadir una cancion a una Lista de reproduccion - Version
-	 * (String, String)
-	 * 
-	 * public boolean addCancionToLista(String nombreLista, String nombreCancion) {
-	 * 
-	 * Cancion cancion = catalogoCanciones.getCancion(nombreCancion); return
-	 * addCancionToLista(nombreLista, cancion);
-	 * 
-	 * }
-	 */
 
 	// Metodo para añadir una cancion a una lista de reproduccion - Version (Lista,
 	// Cancion)
@@ -146,35 +126,25 @@ public class ControladorAppMusic {
 		return lr;
 	}
 
-	// Método para borrar una Lista de reproduccion - Version (String)
-
-	public boolean removeListaReproduccion(String nombre) {
-
-		return usuarioActual.removeListaReproduccion(nombre);
-	}
-
 	// Método para borrar una Lista de reproduccion - Version (ListaReproduccion)
 
 	public boolean removeListaReproduccion(ListaReproduccion lr) {
-		return removeListaReproduccion(lr.getNombre());
+		if (usuarioActual.removeListaReproduccion(lr)) {
+			adaptadorListaReproduccion.borrarListaReproduccion(lr);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
+			return true;
+		}
+		return false;
 	}
 
 	// Metodo para añadir/cargar canciones
 
 	public void loadCanciones() {
 
-		// Metodo lee las canciones en la carpeta correspondiente
-		// Pasos a seguir:
-		// 1. Sacar los estilos (carpetas)
-		// 1.1 Guardo los estilos en un array de strings
-		// 2. Accedo a cada carpeta con el string guardado anteriormente
-		// 2.1 Leo el nombre del fichero
-		// 2.2 Separo los campos del nombre del fichero, y construyo el objeto Cancion
-		// 3. Añado la cancion a la persistencia
-
 		ArrayList<String> estilos = new ArrayList<String>();
 
-		String resourcePath = "./src/main/resources"; // Funciona cuando empaquetado?
+		String resourcePath = "./src/main/resources"; // TEMPORAL
+		// Cambiar el path a otra carpeta para que no se empaqueten las canciones con la aplicacion.
 
 		// Saco las carpetas (estilos)
 
@@ -206,21 +176,61 @@ public class ControladorAppMusic {
 	public void reproducirCancion(Cancion c) {
 
 		try {
-			com.sun.javafx.application.PlatformImpl.startup(() -> {});
+			com.sun.javafx.application.PlatformImpl.startup(() -> {
+			});
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("Exception: " + ex.getMessage());
 		}
-		
-		
+
 		// Reproducir una canción
-		
+
 		String fileName = c.getRutaFichero();
 		File f = new File(fileName);
 		Media hit = new Media(f.toURI().toString());
 		mediaPlayer = new MediaPlayer(hit);
 		mediaPlayer.play();
-
+		
+	}
+	
+	
+	// Metodo para escuchar una cancion - Version 2
+	
+	public void reproducirCancion2(Cancion c) {
+		
+		File f = new File(c.getRutaFichero());
+		Media hit = new Media(f.toURI().toString());
+		
+		if (mediaPlayer == null) {			// Primera vez que se reproduce una cancion
+			
+			try {
+				com.sun.javafx.application.PlatformImpl.startup(() -> {
+				});
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				System.out.println("Exception: " + ex.getMessage());
+			}
+			
+			mediaPlayer = new MediaPlayer(hit);
+			mediaPlayer.play();
+		}
+		else {
+			if (mediaPlayer.getStatus() == Status.PAUSED || mediaPlayer.getStatus() == Status.STOPPED) {
+				
+				if (mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo si la cancion era la misma que se estaba reproduciendo
+					mediaPlayer.play();												// Si lo es, reproduzco
+				} 
+				else {																// Si no es la misma cancion, cambio el media player con esa cancion
+					mediaPlayer = new MediaPlayer(hit);
+					mediaPlayer.play();
+				}
+			} else if (mediaPlayer.getStatus() == Status.PLAYING) {					// Si se cambia la cancion mientras que se esta escuchando otra
+				if (!mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo que la cancion no sea la misma
+					mediaPlayer = new MediaPlayer(hit);
+					mediaPlayer.play();
+				}
+			}
+		}	
 	}
 
 	// Metodo para pausar una cancion
@@ -230,49 +240,53 @@ public class ControladorAppMusic {
 	}
 
 	// Metodo para buscar canciones
-	
+
 	public void buscarCanciones(String titulo, String interprete, String estilo) {
-		
+		// TODO
 	}
-	
+
 	// Metodo para hacerse premium
-	// Descuentos
+
+	public void becomePremium() {
+		// TODO
+		usuarioActual.setPremium(true);
+	}
+
+	// TODO Descuentos
 	// Metodo para mostrar canciones recientes
-	
-	public List<Cancion> getCancionesRecientes(){
+
+	public List<Cancion> getCancionesRecientes() {
 		return usuarioActual.getCancionesRecientes();
 	}
-	
+
 	// Metodo para añadir una cancion reciente
-	
+
 	public List<Cancion> addCancionReciente(Cancion c) {
 		LinkedList<Cancion> recientes = usuarioActual.getCancionesRecientes();
-		
-		if (recientes.size() == MAX_RECIENTES) {		// Si hay ya 10 recientes (maximo)
-			recientes.removeFirst();					// Me elimina la menos reciente (la primera de la lista)
+
+		if (recientes.size() == MAX_RECIENTES) { // Si hay ya 10 recientes (maximo)
+			recientes.removeFirst(); // Me elimina la menos reciente (la primera de la lista)
 		}
-		
+
 		recientes.add(c);
-		
+
 		return recientes;
-		
+
 	}
-	
+
 	// Metodo para mostrar las playlists del usuario
-	
+
 	public List<ListaReproduccion> getAllListasReproduccion() {
 		return usuarioActual.getListasReproduccion();
 	}
-	
-	
+
 	// Metodo para imprimir en pdf
 
 	public void printPDF() {
-		
+
 		// TODO
-		
+
 	}
-	
 
 	// Método para inicializar los adaptadores
 
@@ -321,3 +335,36 @@ public class ControladorAppMusic {
 	}
 
 }
+
+
+
+// Método para borrar una Lista de reproduccion - Version (String)
+
+/*
+  public boolean removeListaReproduccion(String nombre) {
+  
+  if(usuarioActual.removeListaReproduccion(nombre)) {
+  adaptadorListaReproduccion.borrarListaReproduccion(listaRep); } }
+ */
+
+
+// Método para añadir una cancion a una Lista de reproduccion - Version (String,
+// Cancion)
+
+/*
+  public boolean addCancionToLista(String nombreLista, Cancion cancion) {
+  ListaReproduccion lr = usuarioActual.addCancionToLista(nombreLista, cancion);
+  
+  if (lr != null) { adaptadorListaReproduccion.modificarListaReproduccion(lr);
+  return true; } return false; }
+  
+  // Método para añadir una cancion a una Lista de reproduccion - Version
+  (String, String)
+  
+  public boolean addCancionToLista(String nombreLista, String nombreCancion) {
+  
+  Cancion cancion = catalogoCanciones.getCancion(nombreCancion); return
+  addCancionToLista(nombreLista, cancion);
+  
+  }
+ */

@@ -146,20 +146,15 @@ public class Usuario {
 		return lr;
 	}
 	
-	public boolean removeListaReproduccion(String nombre) {
-		int indice = 0;
-		boolean exito = false;
+	public boolean removeListaReproduccion(ListaReproduccion lr) {
 		
-		for (ListaReproduccion lr : listasReproduccion) {
-			if (lr.getNombre().equals(nombre)) {
-				exito = true;
-				break;
-			}
-			indice++;
+		if (listasReproduccion.contains(lr)) {
+			listasReproduccion.remove(lr);
+			return true;
 		}
 		
-		if(exito) listasReproduccion.remove(indice); 
-		return exito;
+		return false;
+		
 	}
 	
 	
