@@ -16,6 +16,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import umu.tds.apps.modelo.*;
+import static java.util.stream.Collectors.*;
 
 public class ControladorAppMusic {
 
@@ -143,7 +144,7 @@ public class ControladorAppMusic {
 
 		ArrayList<String> estilos = new ArrayList<String>();
 
-		String resourcePath = "./src/main/resources"; // TEMPORAL
+		String resourcePath = "./src/main/resources"; // TEMPORAL - CAMBIAR EN EL FUTURO
 		// Cambiar el path a otra carpeta para que no se empaqueten las canciones con la aplicacion.
 
 		// Saco las carpetas (estilos)
@@ -173,7 +174,7 @@ public class ControladorAppMusic {
 
 	// Metodo para escuchar una cancion - Revisar
 
-	public void reproducirCancion(Cancion c) {
+	public void reproducirCancionBasic(Cancion c) {
 
 		try {
 			com.sun.javafx.application.PlatformImpl.startup(() -> {
@@ -196,7 +197,7 @@ public class ControladorAppMusic {
 	
 	// Metodo para escuchar una cancion - Version 2
 	
-	public void reproducirCancion2(Cancion c) {
+	public void reproducirCancion(Cancion c) {
 		
 		File f = new File(c.getRutaFichero());
 		Media hit = new Media(f.toURI().toString());
@@ -214,8 +215,8 @@ public class ControladorAppMusic {
 			mediaPlayer = new MediaPlayer(hit);
 			mediaPlayer.play();
 		}
-		else {
-			if (mediaPlayer.getStatus() == Status.PAUSED || mediaPlayer.getStatus() == Status.STOPPED) {
+		else {		// Si ya se ha creado un MediaPlayer anteriormente (ya se ha escuchado alguna cancion)
+			if (mediaPlayer.getStatus() == Status.PAUSED) {
 				
 				if (mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo si la cancion era la misma que se estaba reproduciendo
 					mediaPlayer.play();												// Si lo es, reproduzco
@@ -235,14 +236,35 @@ public class ControladorAppMusic {
 
 	// Metodo para pausar una cancion
 
-	public void pausarCancion(Cancion c) {
-		// TODO
+	public void pausarCancion() {
+		
+		if (mediaPlayer != null) {
+			if (mediaPlayer.getStatus() == Status.PLAYING) {
+				mediaPlayer.pause();
+			}
+		}
+		
 	}
 
 	// Metodo para buscar canciones
 
-	public void buscarCanciones(String titulo, String interprete, String estilo) {
-		// TODO
+	public List<Cancion> buscarCanciones(String titulo, String interprete, String estilo) {
+		
+		List<Cancion> lc = getAllCanciones();
+		
+		
+		// Interprete lo he filtrado con contains en vez de contentEquals
+		// Porque como puede existir varios interpretes en una cancion
+		// Pues hago matching con la cadena de interprete
+		
+		lc = lc.stream()
+				.filter(c -> titulo == "" || c.getTitulo().contains(titulo))
+				.filter(c -> interprete == "" || c.getInterprete().contains(interprete)) 
+				.filter(c -> estilo == "" || c.getEstilo().contentEquals(estilo))
+				.collect(toList());
+		
+		
+		return lc;
 	}
 
 	// Metodo para hacerse premium
