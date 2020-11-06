@@ -111,6 +111,7 @@ public class ControladorAppMusic {
 		// Si ya existe, no hace nada
 
 		adaptadorListaReproduccion.registrarListaReproduccion(lr);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return lr;
 	}
 
@@ -214,16 +215,19 @@ public class ControladorAppMusic {
 			
 			mediaPlayer = new MediaPlayer(hit);
 			mediaPlayer.play();
+			c.setNumReproducciones(c.getNumReproducciones()+1);	
 		}
 		else {		// Si ya se ha creado un MediaPlayer anteriormente (ya se ha escuchado alguna cancion)
 			if (mediaPlayer.getStatus() == Status.PAUSED) {
 				
 				if (mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo si la cancion era la misma que se estaba reproduciendo
 					mediaPlayer.play();												// Si lo es, reproduzco
+					
 				} 
 				else {																// Si no es la misma cancion, cambio el media player con esa cancion
 					mediaPlayer = new MediaPlayer(hit);
 					mediaPlayer.play();
+					c.setNumReproducciones(c.getNumReproducciones()+1);				// Cuando es una cancion distinta, incremento numero de reproducciones
 				}
 			} else if (mediaPlayer.getStatus() == Status.PLAYING) {					// Si se cambia la cancion mientras que se esta escuchando otra
 				if (!mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo que la cancion no sea la misma
@@ -246,13 +250,12 @@ public class ControladorAppMusic {
 		
 	}
 
-	// Metodo para buscar canciones
+	// Metodo para buscar canciones con un filtro
 
 	public List<Cancion> buscarCanciones(String titulo, String interprete, String estilo) {
 		
 		List<Cancion> lc = getAllCanciones();
-		
-		
+
 		// Interprete lo he filtrado con contains en vez de contentEquals
 		// Porque como puede existir varios interpretes en una cancion
 		// Pues hago matching con la cadena de interprete
@@ -272,9 +275,12 @@ public class ControladorAppMusic {
 	public void becomePremium() {
 		// TODO
 		usuarioActual.setPremium(true);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	// TODO Descuentos
+	
+	
 	// Metodo para mostrar canciones recientes
 
 	public List<Cancion> getCancionesRecientes() {
@@ -290,7 +296,10 @@ public class ControladorAppMusic {
 			recientes.removeFirst(); // Me elimina la menos reciente (la primera de la lista)
 		}
 
-		recientes.add(c);
+		usuarioActual.addCancionReciente(c);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		recientes = usuarioActual.getCancionesRecientes();		// Redundante?
+		
 
 		return recientes;
 
@@ -308,6 +317,12 @@ public class ControladorAppMusic {
 
 		// TODO
 
+	}
+	
+	
+	public List<Cancion> getCancionesMasReproducidas() {
+		
+		return null;
 	}
 
 	// Método para inicializar los adaptadores
