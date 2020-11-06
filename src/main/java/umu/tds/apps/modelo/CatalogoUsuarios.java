@@ -65,6 +65,7 @@ public class CatalogoUsuarios {
 	
 	private void cargarCatalogo() {
 		List<Usuario> usuariosBD = adaptadorU.recuperarTodosUsuarios();
+		
 		for  (Usuario u : usuariosBD) {
 			this.usuarios.put(u.getUsername(), u);
 		}

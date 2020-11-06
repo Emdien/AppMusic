@@ -163,7 +163,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
 		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
 		username = servPersistencia.recuperarPropiedadEntidad(eUsuario, "username");
-		password = servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium");
+		password = servPersistencia.recuperarPropiedadEntidad(eUsuario, "password");
 		premium = Boolean.parseBoolean(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
 		
 		try {

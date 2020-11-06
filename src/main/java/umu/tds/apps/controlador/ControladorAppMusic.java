@@ -56,6 +56,7 @@ public class ControladorAppMusic {
 
 	public boolean login(String usuario, String password) {
 		Usuario user = catalogoUsuarios.getUsuario(usuario);
+		
 		if (user != null && user.getPassword().equals(password)) {
 			this.usuarioActual = user;
 			return true;
@@ -153,7 +154,7 @@ public class ControladorAppMusic {
 
 		ArrayList<String> estilos = new ArrayList<String>();
 
-		String resourcePath = "./src/main/resources"; // TEMPORAL - CAMBIAR EN EL FUTURO
+		String resourcePath = "E:\\AppMusic\\canciones"; // TEMPORAL - CAMBIAR EN EL FUTURO
 		// Cambiar el path a otra carpeta para que no se empaqueten las canciones con la aplicacion.
 
 		// Saco las carpetas (estilos)
@@ -410,7 +411,7 @@ public class ControladorAppMusic {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
 
 		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
-		loadCanciones();
+		//loadCanciones();
 
 	}
 
