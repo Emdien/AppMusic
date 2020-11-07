@@ -50,6 +50,14 @@ public class ControladorAppMusic {
 	private ControladorAppMusic() {
 		inicializarAdaptadores();
 		inicializarCatalogos();
+		
+		try {
+			com.sun.javafx.application.PlatformImpl.startup(() -> {
+			});
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("Exception: " + ex.getMessage());
+		}
 	}
 
 	// Método de Login (Usuario / Contraseña)
@@ -182,9 +190,9 @@ public class ControladorAppMusic {
 		return catalogoCanciones.getCanciones();
 	}
 
-	// Metodo para escuchar una cancion - Revisar
+	// Metodo para escuchar una cancion - OUTDATED - NO UTILIZAR
 
-	public void reproducirCancionBasic(Cancion c) {
+	private void reproducirCancionBasic(Cancion c) {
 
 		try {
 			com.sun.javafx.application.PlatformImpl.startup(() -> {
@@ -214,18 +222,11 @@ public class ControladorAppMusic {
 		
 		if (mediaPlayer == null) {			// Primera vez que se reproduce una cancion
 			
-			try {
-				com.sun.javafx.application.PlatformImpl.startup(() -> {
-				});
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				System.out.println("Exception: " + ex.getMessage());
-			}
-			
 			mediaPlayer = new MediaPlayer(hit);
 			mediaPlayer.play();
 			c.setNumReproducciones(c.getNumReproducciones()+1);
 			addCancionReciente(c);
+			
 		}
 		else {		// Si ya se ha creado un MediaPlayer anteriormente (ya se ha escuchado alguna cancion)
 			if (mediaPlayer.getStatus() == Status.PAUSED) {
@@ -309,12 +310,21 @@ public class ControladorAppMusic {
 	public void addCancionReciente(Cancion c) {
 		LinkedList<Cancion> recientes = usuarioActual.getCancionesRecientes();
 
-		if (recientes.size() == MAX_RECIENTES) { // Si hay ya 10 recientes (maximo)
+		if (!recientes.contains(c)) {				// Si la cancion no esta en recientes
+			if (recientes.size() == MAX_RECIENTES) { // Si hay ya 10 recientes (maximo)
+				recientes.removeFirst(); 			// Me elimina la menos reciente (la primera de la lista)
+			}
+
+			usuarioActual.addCancionReciente(c);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
+		}
+		
+		/*if (recientes.size() == MAX_RECIENTES) { // Si hay ya 10 recientes (maximo)
 			recientes.removeFirst(); // Me elimina la menos reciente (la primera de la lista)
 		}
 
 		usuarioActual.addCancionReciente(c);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
+		adaptadorUsuario.modificarUsuario(usuarioActual);*/
 		//recientes = usuarioActual.getCancionesRecientes();		// Redundante?
 		
 
@@ -325,26 +335,28 @@ public class ControladorAppMusic {
 	// Metodo para mostrar las playlists del usuario
 
 	public List<ListaReproduccion> getAllListasReproduccion() {
-		return usuarioActual.getListasReproduccion();
+		if (!usuarioActual.getListasReproduccion().isEmpty())
+			return usuarioActual.getListasReproduccion();
+		return null;
 	}
 
 	// Metodo para imprimir en pdf las listas de reproduccion del usuario (Premium)
 
-	public void printPDF() throws DocumentException {
+	public boolean printPDF() throws DocumentException {
 		FileOutputStream archivo = null;
 		try {
 			archivo = new FileOutputStream("E:\\AppMusic\\" + usuarioActual.getNombre() + "_playlists.pdf");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		
 		List<ListaReproduccion> listasRep = usuarioActual.getListasReproduccion();
 		Document documento = new Document();
 		PdfWriter.getInstance(documento, archivo);
 		documento.open();
-		documento.add(new Paragraph("Listas de reproduccion del usuario" + usuarioActual.getNombre() +" "+ usuarioActual.getApellidos()));
+		documento.add(new Paragraph("Listas de reproduccion del usuario " + usuarioActual.getNombre() +" "+ usuarioActual.getApellidos()));
 		documento.add(new Paragraph("======================================================"));
 		
 		for (ListaReproduccion lr : listasRep) {
@@ -357,6 +369,7 @@ public class ControladorAppMusic {
 			documento.add(new Paragraph("======================================================"));
 		}
 		documento.close();
+		return true;
 		
 
 	}
@@ -411,7 +424,7 @@ public class ControladorAppMusic {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
 
 		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
-		//loadCanciones();
+		loadCanciones();
 
 	}
 

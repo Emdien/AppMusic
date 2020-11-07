@@ -106,6 +106,8 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO{
 		numReproducciones = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eCancion, "numReproducciones"));
 		
 		Cancion cancion = new Cancion(titulo, rutaFichero, interprete, estilo, numReproducciones);
+		cancion.setCodigo(codigo);
+		
 		
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, cancion);
 		

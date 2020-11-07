@@ -1,11 +1,18 @@
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.itextpdf.text.DocumentException;
+
 import umu.tds.apps.controlador.ControladorAppMusic;
+import umu.tds.apps.modelo.Cancion;
+import umu.tds.apps.modelo.ListaReproduccion;
+import umu.tds.apps.modelo.Usuario;
+import umu.tds.apps.persistencia.AdaptadorUsuarioTDS;
 
 public class TestDriver {
 	
@@ -16,75 +23,105 @@ public class TestDriver {
 		driver = ControladorAppMusic.getUnicaInstancia();
 	}
 	
+	@Test
+	public void testRegistrarUsuario() {
+		assertFalse(driver.registrarUsuario("Gonzalo", "Nicolas", new Date(), "gonzalo.nicolasm@um.es", "Emdien", "1234"));
+	}
 	
 	@Test
 	public void testLogin() {
 		assertTrue(driver.login("Emdien", "1234"));
 	}
 
-	@Test
-	public void testRegistrarUsuario() {
-		assertTrue(driver.registrarUsuario("Gonzalo", "Nicolas", new Date(), "gonzalo.nicolasm@um.es", "Emdien", "1234"));
-	}
+	
 
 	@Test
 	public void testCrearNuevaLista() {
-		fail("Not yet implemented");
+		ListaReproduccion lr = driver.crearNuevaLista("Lista de prueba");
+		List<ListaReproduccion> listas = driver.getAllListasReproduccion();
+		
+		assertTrue(lr != null && listas.size()>0);
 	}
 
 	@Test
 	public void testAddCancionToLista() {
-		fail("Not yet implemented");
+		
+		List<Cancion> canciones = driver.getAllCanciones();
+		Cancion c = canciones.get(0);
+		ListaReproduccion testLista = driver.getAllListasReproduccion().get(0);
+		
+		ListaReproduccion lr = driver.addCancionToLista(testLista, c);
+
+		
+		assertTrue(lr.getCanciones().size()>0);
 	}
 
-	@Test
+	/*@Test
 	public void testRemoveListaReproduccion() {
-		fail("Not yet implemented");
-	}
+		
+		ListaReproduccion lr = driver.getAllListasReproduccion().get(0);
+		assertTrue(driver.removeListaReproduccion(lr));
+	}*/
 
 	@Test
 	public void testGetAllCanciones() {
-		fail("Not yet implemented");
+		List<Cancion> canciones = driver.getAllCanciones();
+		assertTrue(canciones != null);
 	}
 
 	@Test
 	public void testReproducirCancion() {
-		fail("Not yet implemented");
+		Cancion c = driver.getAllCanciones().get(0);
+		driver.reproducirCancion(c);
 	}
 
-	@Test
-	public void testPausarCancion() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testBuscarCanciones() {
-		fail("Not yet implemented");
+		List<Cancion> canciones = driver.buscarCanciones("", "", "JAZZ");
+		if (!canciones.isEmpty()) {
+			for (Cancion c : canciones) 
+				System.out.println(c.getTitulo());
+		}
+		
+		assertTrue(!canciones.isEmpty());
 	}
 
 	@Test
 	public void testGetCancionesRecientes() {
-		fail("Not yet implemented");
+		List<Cancion> recientes = driver.getCancionesRecientes();
+		System.out.println(recientes.size());
+		
+		for (Cancion c : recientes) {
+			System.out.println(c.getTitulo());
+		}
+		
+		assertTrue(!recientes.isEmpty());
 	}
 
-	@Test
-	public void testAddCancionReciente() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testGetAllListasReproduccion() {
-		fail("Not yet implemented");
+		assertTrue(driver.getAllListasReproduccion() != null);
 	}
 
 	@Test
-	public void testPrintPDF() {
-		fail("Not yet implemented");
+	public void testPrintPDF() throws DocumentException {
+		assertTrue(driver.printPDF());
 	}
 
 	@Test
 	public void testGetCancionesMasReproducidas() {
-		fail("Not yet implemented");
+		List<Cancion> masReproducidas = driver.getCancionesMasReproducidas();
+		System.out.println(masReproducidas.size());
+		
+		for(Cancion c : masReproducidas) {
+			System.out.println(c.getTitulo());
+			
+		}
+		
+		assertTrue(!masReproducidas.isEmpty());
+		
 	}
 
 }
