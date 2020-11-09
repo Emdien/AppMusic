@@ -1,9 +1,6 @@
 # AppMusic
 A Java app which is a recreation of a Spotify-like application for the subject of TDS
 
-### Cosas por hacer
-Falta implementar los descuentos (y consecuentemente, hacerse premium)
-
 ### Metodos del controlador
 
 ```java
@@ -83,9 +80,8 @@ Nota importante: el filtro es **CASE SENSITIVE o SENSIBLE A MAYUSCULAS**, por lo
 becomePremium()
 ```
 Método para convertir a un usuario en premium.
-Este método **NO ESTA COMPLETADO**.
-Actualmente solo cambia el atributo del usuario y actualiza la base de datos. No tiene en cuenta descuentos etc.
-(Tampoco se si tendre que añadir algo mas).
+Llama al metodo del usuario realizarPago(), el cual le cambia su estado a premium.
+Consecuentemente, llama al DAO para actualizar el Usuario en la BD.
 
 ```java
 List<Cancion> getCancionesRecientes()
@@ -115,3 +111,12 @@ El fichero se genera actualmente en E:/AppMusic.
 List<Cancion> getCancionesMasReproducidas()
 ```
 Devuelve la lista de las 10 canciones mas reproducidas en la aplicacion.
+
+```java
+Descuento getDescuentoUsuario()
+```
+Devuelve el objeto Descuento aplicado al usuario actual.
+```java
+Double getPrecio()
+```
+Devuelve el precio a pagar para ser premium.
