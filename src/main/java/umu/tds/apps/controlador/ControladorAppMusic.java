@@ -289,13 +289,24 @@ public class ControladorAppMusic {
 	// Metodo para hacerse premium
 
 	public void becomePremium() {
-		// TODO
-		usuarioActual.setPremium(true);
+		usuarioActual.realizarPago();
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 	
+	
 
-	// TODO Descuentos
+	// Metodo para obtener el descuento aplicado del usuario actual
+	public Descuento getDescuentoUsuario() {
+		return usuarioActual.getDescuento();
+	}
+	
+	
+	// NO SE SI ES NECESARIO ESTE METODO
+	
+	// Metodo para obtener el valor a pagar con el descuento aplicado
+	public Double getPrecio() {
+		return usuarioActual.getPrecio();
+	}
 	
 	
 	// Metodo para mostrar canciones recientes

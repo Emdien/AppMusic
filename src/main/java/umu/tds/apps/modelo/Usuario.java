@@ -1,9 +1,14 @@
 package umu.tds.apps.modelo;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
 
 public class Usuario {
+	
+	private static final Double precioBase = 5.0;		// 9-11-2020 Precio base de premium
+	
 	
 	private int codigo;
 
@@ -18,6 +23,8 @@ public class Usuario {
 	private LinkedList<ListaReproduccion> listasReproduccion;
 	private LinkedList<Cancion> cancionesRecientes;
 	
+	private Descuento descuento;
+	
 	public Usuario(String nombre, String apellidos, Date fechaNacimiento, String email, String username,
 			String password, Boolean premium) {
 		super();
@@ -31,9 +38,28 @@ public class Usuario {
 		this.premium = premium;
 		this.listasReproduccion = new LinkedList<ListaReproduccion>();
 		this.cancionesRecientes = new LinkedList<Cancion>();
+		
+		this.descuento = generarDescuento();
 	}
 	
 	
+	private Descuento generarDescuento() {
+		
+		Descuento aux = null;
+		
+		// Caso DescuentoEdad
+		aux = new DescuentoEdad().generarDescuento(this);	// Puedo utilizar this aqui? Si no, paso solo la fecha de nacimiento
+		if (aux != null) return aux;
+		
+		// Casi DescuentoTemporal
+		aux = new DescuentoTemporal().generarDescuento(this);
+		if (aux != null) return aux;
+
+		return aux;
+		
+	}
+
+
 	public int getCodigo() {
 		return codigo;
 	}
@@ -156,6 +182,25 @@ public class Usuario {
 		return false;
 		
 	}
+
+
+	public static Double getPreciobase() {
+		return precioBase;
+	}
+
+
+	public Descuento getDescuento() {
+		return descuento;
+	}
 	
+	
+	public Double realizarPago() {
+		this.setPremium(true);
+		return this.descuento.calcDescuento();
+	}
+	
+	public Double getPrecio() {
+		return this.descuento.calcDescuento();
+	}
 	
 }
