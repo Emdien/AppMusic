@@ -93,8 +93,9 @@ public class Login {
 		// Panel de contenidos de la ventana de login/registro
 		
 		registro = new Registro(this);
-		frame.getContentPane().add(registro);
 		registro.setVisible(false);
+		frame.getContentPane().add(registro);
+		
 		
 		content_panel_container = new JPanel();
 		content_panel_container.setMaximumSize(new Dimension(32767, 350));

@@ -16,6 +16,8 @@ import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Color;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 public class Registro extends JPanel {
 
@@ -27,7 +29,6 @@ public class Registro extends JPanel {
 	private Login login_window;
 	private JTextField nombre_textField;
 	private JTextField apellidos_textField;
-	private JTextField textField_2;
 	private JTextField email_textField;
 	private JTextField username_textField;
 	private JPasswordField passwordField;
@@ -44,6 +45,7 @@ public class Registro extends JPanel {
 	private JLabel lblUserRegisteredWarning;
 	private Component rigidArea_2;
 	private Component rigidArea_3;
+	private JDateChooser dateChooser;
 	
 	public Registro(Login window) {
 		
@@ -127,14 +129,13 @@ public class Registro extends JPanel {
 		gbc_lblNewLabel_2.gridy = 3;
 		panel.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 3;
-		gbc_textField_2.gridy = 3;
-		panel.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		dateChooser = new JDateChooser();
+		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
+		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
+		gbc_dateChooser.fill = GridBagConstraints.BOTH;
+		gbc_dateChooser.gridx = 3;
+		gbc_dateChooser.gridy = 3;
+		panel.add(dateChooser, gbc_dateChooser);
 		
 		lblFechaWarning = new JLabel("*");
 		lblFechaWarning.setForeground(Color.RED);
@@ -370,6 +371,10 @@ public class Registro extends JPanel {
 			lblUsernameWarning.setVisible(true); 
 			ok=false;
 		}
+		if (dateChooser.getDate() == null) {
+			lblFechaWarning.setVisible(true);
+			ok=false;
+		}
 		
 		String password = new String(passwordField.getPassword());
 		String password2 = new String(passwordField_1.getPassword());
@@ -400,11 +405,11 @@ public class Registro extends JPanel {
 	private void vaciar() {
 		nombre_textField.setText("");
 		apellidos_textField.setText("");
-		textField_2.setText("");
 		email_textField.setText("");
 		username_textField.setText("");
 		passwordField.setText("");
 		passwordField_1.setText("");
+		dateChooser.setDate(null);
 		
 	}
 
