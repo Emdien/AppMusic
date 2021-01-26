@@ -6,7 +6,7 @@ public class DescuentoTemporal implements Descuento{
 	
 	private final Double valorDescuento = 0.20;
 	private final static int duracionDescuento = 15;
-	private final static LocalDate fechaInicio = LocalDate.parse("2020-11-9");
+	private final static LocalDate fechaInicio = LocalDate.parse("2020-11-09");
 
 	
 	

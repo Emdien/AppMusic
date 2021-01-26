@@ -15,10 +15,14 @@ import javax.swing.Box;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+
+import umu.tds.apps.controlador.ControladorAppMusic;
+
 import java.awt.Insets;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 
 public class Login {
@@ -28,6 +32,7 @@ public class Login {
 	private JPasswordField passwordField;
 	private JPanel content_panel_container;
 	private Registro registro;
+	private ControladorAppMusic controlador;
 
 	/**
 	 * Launch the application.
@@ -49,6 +54,7 @@ public class Login {
 	 * Create the application.
 	 */
 	public Login() {
+		controlador = ControladorAppMusic.getUnicaInstancia();
 		initialize();
 	}
 
@@ -152,6 +158,11 @@ public class Login {
 		JButton btnNewButton = new JButton("Iniciar sesi\u00F3n");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String usuario = textField.getText().trim();
+				String password = new String(passwordField.getPassword());
+				boolean logged = controlador.login(usuario, password);
+				System.out.println(logged);
+				
 			}
 		});
 		
@@ -173,7 +184,7 @@ public class Login {
 		buttons_panel.add(btnNewButton_1);
 	}
 
-	public void changeContents() {
+	public void changeContents(int flag) {	// Flag = 0 no muestra nada (Cancelar) Flag = 1 registrado con exito.
 		content_panel_container.setVisible(true);
 		registro.setVisible(false);
 		frame.setTitle("AppMusic Login");
@@ -189,6 +200,11 @@ public class Login {
 		content_panel_container.setVisible(false);
 		frame.revalidate();
 		frame.repaint();
+	}
+
+	public boolean registrar(String nombre, String apellidos, Date fecha, String email, String username, String password) {
+		
+		return controlador.registrarUsuario(nombre, apellidos, fecha, email, username, password);
 	}
 	
 	

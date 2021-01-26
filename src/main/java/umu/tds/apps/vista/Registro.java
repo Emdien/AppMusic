@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
@@ -262,6 +263,22 @@ public class Registro extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkFields()) {
+					String nombre = nombre_textField.getText().trim();
+					String apellidos = apellidos_textField.getText().trim();
+					Date fecha = dateChooser.getDate();
+					String email = email_textField.getText().trim();
+					String username = username_textField.getText().trim();
+					String password = new String(passwordField.getPassword());	// NO ES SEGURO.
+					
+					boolean esRegistrado = login_window.registrar(nombre, apellidos, fecha, email, username, password);
+					System.out.println(esRegistrado);
+					if (!esRegistrado) {
+						lblUserRegisteredWarning.setVisible(true);
+					} else {
+						vaciar();
+						ocultarWarnings();
+						login_window.changeContents(1);
+					}
 					
 				}
 			}
@@ -281,7 +298,7 @@ public class Registro extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				vaciar();
 				ocultarWarnings();
-				login_window.changeContents();
+				login_window.changeContents(0);
 				
 			}
 		});
