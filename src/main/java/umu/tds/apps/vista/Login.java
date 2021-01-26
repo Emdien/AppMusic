@@ -27,6 +27,7 @@ public class Login {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private JPanel content_panel_container;
+	private Registro registro;
 
 	/**
 	 * Launch the application.
@@ -90,6 +91,10 @@ public class Login {
 		
 		
 		// Panel de contenidos de la ventana de login/registro
+		
+		registro = new Registro(this);
+		frame.getContentPane().add(registro);
+		registro.setVisible(false);
 		
 		content_panel_container = new JPanel();
 		content_panel_container.setMaximumSize(new Dimension(32767, 350));
@@ -167,20 +172,22 @@ public class Login {
 		buttons_panel.add(btnNewButton_1);
 	}
 
-	public void changeContents(JPanel login_contents) {
-		content_panel_container = login_contents;
+	public void changeContents() {
+		content_panel_container.setVisible(true);
+		registro.setVisible(false);
 		frame.setTitle("AppMusic Login");
 		frame.revalidate();
+		frame.repaint();
 		
 	}
 	
 	private void changeToRegister() {
 		System.out.println("Cambiando a panel de registro");
-		JPanel aux = new Registro(content_panel_container, this);
 		frame.setTitle("AppMusic Registro");
-		content_panel_container = aux;
+		registro.setVisible(true);
 		content_panel_container.setVisible(false);
 		frame.revalidate();
+		frame.repaint();
 	}
 	
 	

@@ -42,14 +42,16 @@ public class Registro extends JPanel {
 	private JLabel lblAllFieldsWarning;
 	private JLabel lblPasswordMatchWarning;
 	private JLabel lblUserRegisteredWarning;
+	private Component rigidArea_2;
+	private Component rigidArea_3;
 	
-	public Registro(JPanel contents, Login window) {
+	public Registro(Login window) {
 		
 		// Se guarda una referencia a la ventana de login para poder mandarle mensajes.
 		login_window = window;
 		
 		// Los contenidos del panel de login se guardan aqui.
-		login_contents = contents;
+		//login_contents = contents;
 		
 		
 		setMinimumSize(new Dimension(10, 350));
@@ -216,6 +218,13 @@ public class Registro extends JPanel {
 		gbc_lblPasswordWarning.gridy = 6;
 		panel.add(lblPasswordWarning, gbc_lblPasswordWarning);
 		
+		rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
+		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
+		gbc_rigidArea_2.insets = new Insets(0, 0, 0, 5);
+		gbc_rigidArea_2.gridx = 1;
+		gbc_rigidArea_2.gridy = 7;
+		panel.add(rigidArea_2, gbc_rigidArea_2);
+		
 		JLabel lblNewLabel_6 = new JLabel("Repetir contrase\u00F1a:");
 		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
 		gbc_lblNewLabel_6.insets = new Insets(0, 0, 0, 5);
@@ -258,7 +267,7 @@ public class Registro extends JPanel {
 		});
 		
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
-		rigidArea_1.setPreferredSize(new Dimension(85, 20));
+		rigidArea_1.setPreferredSize(new Dimension(51, 20));
 		panel_2.add(rigidArea_1);
 		panel_2.add(btnNewButton);
 		
@@ -267,6 +276,14 @@ public class Registro extends JPanel {
 		panel_2.add(rigidArea);
 		
 		JButton btnNewButton_1 = new JButton("Cancelar");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vaciar();
+				ocultarWarnings();
+				login_window.changeContents();
+				
+			}
+		});
 		panel_2.add(btnNewButton_1);
 		
 		JPanel panel_3 = new JPanel();
@@ -277,6 +294,13 @@ public class Registro extends JPanel {
 		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
+		
+		rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
+		GridBagConstraints gbc_rigidArea_3 = new GridBagConstraints();
+		gbc_rigidArea_3.insets = new Insets(0, 0, 5, 5);
+		gbc_rigidArea_3.gridx = 3;
+		gbc_rigidArea_3.gridy = 0;
+		panel_3.add(rigidArea_3, gbc_rigidArea_3);
 		
 		lblAllFieldsWarning = new JLabel("* Todos los campos han de ser rellenados");
 		lblAllFieldsWarning.setForeground(Color.RED);
@@ -301,6 +325,10 @@ public class Registro extends JPanel {
 		gbc_lblUserRegisteredWarning.gridx = 4;
 		gbc_lblUserRegisteredWarning.gridy = 2;
 		panel_3.add(lblUserRegisteredWarning, gbc_lblUserRegisteredWarning);
+		
+		
+		ocultarWarnings();
+		
 
 	}
 	
@@ -365,8 +393,19 @@ public class Registro extends JPanel {
 			ok=false;
 		}
 		
+		return ok;
+	}
+	
+	
+	private void vaciar() {
+		nombre_textField.setText("");
+		apellidos_textField.setText("");
+		textField_2.setText("");
+		email_textField.setText("");
+		username_textField.setText("");
+		passwordField.setText("");
+		passwordField_1.setText("");
 		
-		return false;
 	}
 
 }
