@@ -15,6 +15,9 @@ import javax.swing.JLabel;
 import java.awt.FlowLayout;
 import javax.swing.Box;
 import javax.swing.border.LineBorder;
+
+import umu.tds.apps.controlador.ControladorAppMusic;
+
 import java.awt.Color;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -49,7 +52,10 @@ public class Principal {
 	private JButton btnNewButton_1;
 	
 	
-	public static void main(String[] args) {
+	private ControladorAppMusic controlador;
+	
+	
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -60,13 +66,15 @@ public class Principal {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
 	 */
 	public Principal() {
+		this.controlador = ControladorAppMusic.getUnicaInstancia();
 		initialize();
+		this.frame.setVisible(true);
 	}
 
 	/**
@@ -95,7 +103,8 @@ public class Principal {
 			}
 		});
 		
-		lblUsuario = new JLabel("#Username");
+		lblUsuario = new JLabel();
+		lblUsuario.setText(controlador.getUsuarioActual().getNombre());
 		header_panel.add(lblUsuario);
 		
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));

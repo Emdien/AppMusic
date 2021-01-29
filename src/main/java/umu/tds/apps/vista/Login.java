@@ -161,7 +161,12 @@ public class Login {
 				String usuario = textField.getText().trim();
 				String password = new String(passwordField.getPassword());
 				boolean logged = controlador.login(usuario, password);
-				System.out.println(logged);
+				
+				if (logged) {
+					Principal windowP = new Principal();
+					frame.dispose();
+					
+				}
 				
 			}
 		});
