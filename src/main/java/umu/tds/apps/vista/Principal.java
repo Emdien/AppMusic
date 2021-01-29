@@ -45,6 +45,8 @@ public class Principal {
 	private JPanel current_content;
 	private JScrollPane scrollPane;
 	private JList list;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
 	
 	
 	public static void main(String[] args) {
@@ -102,6 +104,10 @@ public class Principal {
 		btnMejorar = new JButton("Mejorar tu cuenta");
 		btnMejorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				btnNewButton.setEnabled(true);
+				btnNewButton_1.setEnabled(true);
+				frame.repaint();
+				frame.revalidate();
 			}
 		});
 		header_panel.add(btnMejorar);
@@ -123,13 +129,15 @@ public class Principal {
 		sidebar_panel.setLayout(new BorderLayout(0, 0));
 		
 		sidebar_buttons = new JPanel();
-		sidebar_buttons.setMinimumSize(new Dimension(225, 250));
-		sidebar_buttons.setPreferredSize(new Dimension(225, 210));
-		sidebar_buttons.setMaximumSize(new Dimension(225, 250));
+		sidebar_buttons.setMinimumSize(new Dimension(225, 300));
+		sidebar_buttons.setPreferredSize(new Dimension(225, 300));
+		sidebar_buttons.setMaximumSize(new Dimension(225, 300));
 		sidebar_panel.add(sidebar_buttons, BorderLayout.NORTH);
 		sidebar_buttons.setLayout(new BoxLayout(sidebar_buttons, BoxLayout.Y_AXIS));
 		
 		btnExplorar = new JButton("Explorar");
+		btnExplorar.setPreferredSize(new Dimension(225, 50));
+		btnExplorar.setMinimumSize(new Dimension(225, 50));
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Explorar panel_exp = new Explorar();
@@ -144,6 +152,8 @@ public class Principal {
 		sidebar_buttons.add(btnExplorar);
 		
 		btnNuevaLista = new JButton("Nueva lista");
+		btnNuevaLista.setPreferredSize(new Dimension(225, 50));
+		btnNuevaLista.setMinimumSize(new Dimension(225, 50));
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				NuevaLista panel_nl = new NuevaLista();
@@ -158,14 +168,24 @@ public class Principal {
 		sidebar_buttons.add(btnNuevaLista);
 		
 		btnReciente = new JButton("Reciente");
+		btnReciente.setPreferredSize(new Dimension(225, 50));
+		btnReciente.setMinimumSize(new Dimension(225, 50));
 		btnReciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Reciente panel_rec = new Reciente();
+				body_panel.remove(current_content);
+				body_panel.add(panel_rec, BorderLayout.CENTER);
+				current_content = panel_rec;
+				frame.repaint();
+				frame.revalidate();
 			}
 		});
 		btnReciente.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnReciente);
 		
 		btnMisListas = new JButton("Mis listas");
+		btnMisListas.setPreferredSize(new Dimension(225, 50));
+		btnMisListas.setMinimumSize(new Dimension(225, 50));
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(true);
@@ -180,17 +200,42 @@ public class Principal {
 		btnMisListas.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnMisListas);
 		
+		btnNewButton = new JButton("Canciones mas reproducidas");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MasReproducidas panel_mr = new MasReproducidas();
+				body_panel.remove(current_content);
+				body_panel.add(panel_mr, BorderLayout.CENTER);
+				current_content = panel_mr;
+				frame.repaint();
+				frame.revalidate();
+				
+			}
+		});
+		btnNewButton.setEnabled(false);
+		btnNewButton.setMinimumSize(new Dimension(225, 50));
+		btnNewButton.setMaximumSize(new Dimension(225, 50));
+		btnNewButton.setPreferredSize(new Dimension(225, 50));
+		sidebar_buttons.add(btnNewButton);
+		
+		btnNewButton_1 = new JButton("Imprimir Playlists");
+		btnNewButton_1.setEnabled(false);
+		btnNewButton_1.setPreferredSize(new Dimension(225, 50));
+		btnNewButton_1.setMinimumSize(new Dimension(225, 50));
+		btnNewButton_1.setMaximumSize(new Dimension(225, 50));
+		sidebar_buttons.add(btnNewButton_1);
+		
 		sidebar_playlists = new JPanel();
 		sidebar_panel.add(sidebar_playlists, BorderLayout.CENTER);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setVisible(false);
-		scrollPane.setPreferredSize(new Dimension(225, 340));
+		scrollPane.setPreferredSize(new Dimension(225, 240));
 		sidebar_playlists.add(scrollPane);
 		
 		list = new JList();
 		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Playlist 1", "Playlist 2", "Playlist 3"};
+			String[] values = new String[] {"Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4"};
 			public int getSize() {
 				return values.length;
 			}
