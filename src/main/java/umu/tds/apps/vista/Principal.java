@@ -108,6 +108,7 @@ public class Principal {
 				btnNewButton_1.setEnabled(true);
 				frame.repaint();
 				frame.revalidate();
+				System.out.println("test");
 			}
 		});
 		header_panel.add(btnMejorar);
