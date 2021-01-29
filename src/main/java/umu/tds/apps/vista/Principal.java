@@ -18,10 +18,47 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.AbstractListModel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class Principal {
 
 	private JFrame frame;
+	private JPanel header_panel;
+	private JLabel lblUsuario;
+	private JButton btnMejorar;
+	private JPanel body_panel;
+	private JPanel sidebar_panel;
+	private JPanel sidebar_buttons;
+	private JButton btnExplorar;
+	private JButton btnNuevaLista;
+	private JButton btnReciente;
+	private JButton btnMisListas;
+	private JPanel sidebar_playlists;
+	private JPanel action_panel;
+	private JButton btnPrevious;
+	private JButton btnPlay;
+	private JButton btnNext;
+	private JPanel content_panel;
+	private JPanel current_content;
+	private JScrollPane scrollPane;
+	private JList list;
+	
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Principal window = new Principal();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the application.
@@ -40,7 +77,7 @@ public class Principal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 		
-		JPanel header_panel = new JPanel();
+		header_panel = new JPanel();
 		header_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		FlowLayout flowLayout = (FlowLayout) header_panel.getLayout();
 		flowLayout.setVgap(12);
@@ -56,13 +93,13 @@ public class Principal {
 			}
 		});
 		
-		JLabel lblUsuario = new JLabel("#Username");
+		lblUsuario = new JLabel("#Username");
 		header_panel.add(lblUsuario);
 		
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
 		header_panel.add(rigidArea_1);
 		
-		JButton btnMejorar = new JButton("Mejorar tu cuenta");
+		btnMejorar = new JButton("Mejorar tu cuenta");
 		btnMejorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -73,11 +110,11 @@ public class Principal {
 		header_panel.add(rigidArea);
 		header_panel.add(btnLogout);
 		
-		JPanel body_panel = new JPanel();
+		body_panel = new JPanel();
 		frame.getContentPane().add(body_panel);
 		body_panel.setLayout(new BorderLayout(0, 0));
 		
-		JPanel sidebar_panel = new JPanel();
+		sidebar_panel = new JPanel();
 		sidebar_panel.setMinimumSize(new Dimension(225, 10));
 		sidebar_panel.setMaximumSize(new Dimension(225, 32767));
 		sidebar_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -85,61 +122,83 @@ public class Principal {
 		body_panel.add(sidebar_panel, BorderLayout.WEST);
 		sidebar_panel.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		panel.setMinimumSize(new Dimension(225, 250));
-		panel.setPreferredSize(new Dimension(225, 210));
-		panel.setMaximumSize(new Dimension(225, 250));
-		sidebar_panel.add(panel, BorderLayout.NORTH);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		sidebar_buttons = new JPanel();
+		sidebar_buttons.setMinimumSize(new Dimension(225, 250));
+		sidebar_buttons.setPreferredSize(new Dimension(225, 210));
+		sidebar_buttons.setMaximumSize(new Dimension(225, 250));
+		sidebar_panel.add(sidebar_buttons, BorderLayout.NORTH);
+		sidebar_buttons.setLayout(new BoxLayout(sidebar_buttons, BoxLayout.Y_AXIS));
 		
-		JButton btnExplorar = new JButton("Explorar");
+		btnExplorar = new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("test");
+				Explorar panel_exp = new Explorar();
+				body_panel.remove(current_content);
+				body_panel.add(panel_exp, BorderLayout.CENTER);
+				current_content = panel_exp;
+				frame.repaint();
+				frame.revalidate();	
 			}
 		});
 		btnExplorar.setMaximumSize(new Dimension(225, 50));
-		panel.add(btnExplorar);
+		sidebar_buttons.add(btnExplorar);
 		
-		JButton btnNuevaLista = new JButton("Nueva lista");
+		btnNuevaLista = new JButton("Nueva lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		btnNuevaLista.setMaximumSize(new Dimension(225, 50));
-		panel.add(btnNuevaLista);
+		sidebar_buttons.add(btnNuevaLista);
 		
-		JButton btnReciente = new JButton("Reciente");
+		btnReciente = new JButton("Reciente");
 		btnReciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		btnReciente.setMaximumSize(new Dimension(225, 50));
-		panel.add(btnReciente);
+		sidebar_buttons.add(btnReciente);
 		
-		JButton btnMisListas = new JButton("Mis listas");
+		btnMisListas = new JButton("Mis listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scrollPane.setVisible(true);
+				frame.repaint();
+				frame.revalidate();
 			}
 		});
 		btnMisListas.setMaximumSize(new Dimension(225, 50));
-		panel.add(btnMisListas);
+		sidebar_buttons.add(btnMisListas);
 		
-		JPanel panel_1 = new JPanel();
-		sidebar_panel.add(panel_1, BorderLayout.CENTER);
+		sidebar_playlists = new JPanel();
+		sidebar_panel.add(sidebar_playlists, BorderLayout.CENTER);
 		
-		JList list = new JList();
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setPreferredSize(new Dimension(225, 350));
-		panel_1.add(list);
+		scrollPane = new JScrollPane();
+		scrollPane.setVisible(false);
+		scrollPane.setPreferredSize(new Dimension(225, 340));
+		sidebar_playlists.add(scrollPane);
 		
-		JPanel action_panel = new JPanel();
+		list = new JList();
+		list.setModel(new AbstractListModel() {
+			String[] values = new String[] {"Playlist 1", "Playlist 2", "Playlist 3"};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		scrollPane.setViewportView(list);
+		
+		action_panel = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) action_panel.getLayout();
 		flowLayout_1.setVgap(20);
 		action_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		action_panel.setPreferredSize(new Dimension(10, 65));
 		body_panel.add(action_panel, BorderLayout.SOUTH);
 		
-		JButton btnPrevious = new JButton("#Previous");
+		btnPrevious = new JButton("#Previous");
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -149,7 +208,7 @@ public class Principal {
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		action_panel.add(rigidArea_2);
 		
-		JButton btnPlay = new JButton("#Play/Stop\r\n");
+		btnPlay = new JButton("#Play/Stop\r\n");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -159,15 +218,21 @@ public class Principal {
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		action_panel.add(rigidArea_3);
 		
-		JButton btnNext = new JButton("#Next\r\n");
+		btnNext = new JButton("#Next\r\n");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		action_panel.add(btnNext);
 		
-		JPanel content_panel = new JPanel();
+		content_panel = new JPanel();
+		content_panel.setMaximumSize(new Dimension(975, 32767));
 		body_panel.add(content_panel, BorderLayout.CENTER);
+		
+		JLabel lblNewLabel = new JLabel("975 x 585");
+		content_panel.add(lblNewLabel);
+		
+		current_content = content_panel;
 	}
 
 }
