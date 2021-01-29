@@ -132,7 +132,6 @@ public class Principal {
 		btnExplorar = new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("test");
 				Explorar panel_exp = new Explorar();
 				body_panel.remove(current_content);
 				body_panel.add(panel_exp, BorderLayout.CENTER);
@@ -147,7 +146,6 @@ public class Principal {
 		btnNuevaLista = new JButton("Nueva lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("test2");
 				NuevaLista panel_nl = new NuevaLista();
 				body_panel.remove(current_content);
 				body_panel.add(panel_nl, BorderLayout.CENTER);
@@ -171,6 +169,10 @@ public class Principal {
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(true);
+				MisListas panel_ml = new MisListas();
+				body_panel.remove(current_content);
+				body_panel.add(panel_ml, BorderLayout.CENTER);
+				current_content = panel_ml;
 				frame.repaint();
 				frame.revalidate();
 			}
