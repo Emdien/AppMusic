@@ -147,6 +147,13 @@ public class Principal {
 		btnNuevaLista = new JButton("Nueva lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("test2");
+				NuevaLista panel_nl = new NuevaLista();
+				body_panel.remove(current_content);
+				body_panel.add(panel_nl, BorderLayout.CENTER);
+				current_content = panel_nl;
+				frame.repaint();
+				frame.revalidate();
 			}
 		});
 		btnNuevaLista.setMaximumSize(new Dimension(225, 50));
