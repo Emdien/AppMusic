@@ -8,22 +8,34 @@ import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Dimension;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
+
+import umu.tds.apps.controlador.ControladorAppMusic;
+import umu.tds.apps.modelo.Cancion;
+
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 public class Explorar extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtInterprete;
+	private JTextField txtTitulo;
+	private JTextField txtEstilo;
 	private JTable table;
+	private ControladorAppMusic controlador;
+	private ArrayList<Cancion> resultadoBusqueda = new ArrayList<>();
 
 	/**
 	 * Create the panel.
 	 */
-	public Explorar() {
+	public Explorar(JFrame ventana) {
+		controlador = ControladorAppMusic.getUnicaInstancia();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel panel = new JPanel();
@@ -35,9 +47,9 @@ public class Explorar extends JPanel {
 		JLabel lblNewLabel = new JLabel("Interprete");
 		panel.add(lblNewLabel);
 		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(15);
+		txtInterprete = new JTextField();
+		panel.add(txtInterprete);
+		txtInterprete.setColumns(15);
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 		panel.add(rigidArea);
@@ -45,9 +57,9 @@ public class Explorar extends JPanel {
 		JLabel lblNewLabel_1 = new JLabel("T\u00EDtulo");
 		panel.add(lblNewLabel_1);
 		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(15);
+		txtTitulo = new JTextField();
+		panel.add(txtTitulo);
+		txtTitulo.setColumns(15);
 		
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
 		panel.add(rigidArea_1);
@@ -55,9 +67,9 @@ public class Explorar extends JPanel {
 		JLabel lblNewLabel_2 = new JLabel("Estilo");
 		panel.add(lblNewLabel_2);
 		
-		textField_2 = new JTextField();
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		txtEstilo = new JTextField();
+		panel.add(txtEstilo);
+		txtEstilo.setColumns(10);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		panel.add(rigidArea_2);
@@ -65,7 +77,19 @@ public class Explorar extends JPanel {
 		JButton btnNewButton = new JButton("Buscar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+				dtm.setRowCount(0);  // Borra el contenido previo
+				resultadoBusqueda = new ArrayList<>();
+				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), txtEstilo.getText());	// Arreglar para que no haga casting?
+				for (Cancion c : resultadoBusqueda) {
+					System.out.println(c.getTitulo());
+					Vector<String> v = new Vector<>(); 
+					v.add(c.getTitulo());
+					v.add(c.getInterprete());
+					dtm.addRow(v);
+					ventana.repaint();
+					ventana.revalidate();
+				}
 				
 			}
 		});
@@ -83,6 +107,8 @@ public class Explorar extends JPanel {
 		panel_1.add(scrollPane);
 		
 		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},

@@ -157,6 +157,7 @@ public class ControladorAppMusic {
 	}
 
 	// Metodo para añadir/cargar canciones		MODIFICAR
+	// Falta hacer trimming de .mp3 en titulo
 
 	public void loadCanciones() {
 
@@ -271,18 +272,23 @@ public class ControladorAppMusic {
 		loadCanciones();		// Busco canciones en la carpeta, en caso de que haya nuevas canciones.
 		
 		List<Cancion> lc = getAllCanciones();
+		System.out.println("test 2 inside");
 
 		// Interprete lo he filtrado con contains en vez de contentEquals
 		// Porque como puede existir varios interpretes en una cancion
 		// Pues hago matching con la cadena de interprete
 		
+		System.out.println(lc.isEmpty());
+		
+		// Arreglar algo aqui? idk no funciona bien
+		
 		lc = lc.stream()
-				.filter(c -> titulo == "" || c.getTitulo().contains(titulo))
-				.filter(c -> interprete == "" || c.getInterprete().contains(interprete)) 
-				.filter(c -> estilo == "" || c.getEstilo().contentEquals(estilo))
+				.filter(c -> titulo.equals("") || c.getTitulo().contains(titulo))
+				.filter(c -> interprete.equals("") || c.getInterprete().contains(interprete)) 
+				.filter(c -> estilo.equals("") || c.getEstilo().contentEquals(estilo))
 				.collect(toList());
 		
-		
+		System.out.println(lc.isEmpty());
 		return lc;
 	}
 
@@ -440,6 +446,7 @@ public class ControladorAppMusic {
 	}
 
 	// Metodo para cargar una cancion a partir de un fichero
+	// Falta hacer trimming de .mp3 en titulo
 
 	private void loadCancionesInFolder(File archivo, String estilo) {
 		String[] split = archivo.getName().split("-");

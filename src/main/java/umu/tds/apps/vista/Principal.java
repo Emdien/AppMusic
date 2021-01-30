@@ -150,7 +150,7 @@ public class Principal {
 		btnExplorar.setMinimumSize(new Dimension(225, 50));
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Explorar panel_exp = new Explorar();
+				Explorar panel_exp = new Explorar(frame);
 				body_panel.remove(current_content);
 				body_panel.add(panel_exp, BorderLayout.CENTER);
 				current_content = panel_exp;
