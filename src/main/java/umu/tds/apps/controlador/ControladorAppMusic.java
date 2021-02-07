@@ -452,6 +452,9 @@ public class ControladorAppMusic {
 		String[] split = archivo.getName().split("-");
 		String interpretes = split[0];
 		String titulo = split[1];
+		titulo = titulo.split(".mp3")[0];
+		titulo = titulo.trim();
+		System.out.println(titulo);
 
 		Cancion cancion = catalogoCanciones.getCancion(titulo);
 

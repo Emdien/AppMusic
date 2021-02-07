@@ -22,6 +22,7 @@ import umu.tds.apps.modelo.Cancion;
 
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 
 public class Explorar extends JPanel {
 	private JTextField txtInterprete;
@@ -30,6 +31,7 @@ public class Explorar extends JPanel {
 	private JTable table;
 	private ControladorAppMusic controlador;
 	private ArrayList<Cancion> resultadoBusqueda = new ArrayList<>();
+	private JScrollPane scrollPane;
 
 	/**
 	 * Create the panel.
@@ -82,7 +84,7 @@ public class Explorar extends JPanel {
 				resultadoBusqueda = new ArrayList<>();
 				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), txtEstilo.getText());	// Arreglar para que no haga casting?
 				for (Cancion c : resultadoBusqueda) {
-					System.out.println(c.getTitulo());
+					//System.out.println(c.getTitulo());
 					Vector<String> v = new Vector<>(); 
 					v.add(c.getTitulo());
 					v.add(c.getInterprete());
@@ -102,11 +104,15 @@ public class Explorar extends JPanel {
 		panel_1.setMaximumSize(new Dimension(975, 550));
 		add(panel_1);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(400, 500));
+		scrollPane = new JScrollPane();
+		//scrollPane.setMaximumSize(new Dimension(400, 500));
+		//scrollPane.setMinimumSize(new Dimension(400, 500));
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//scrollPane.setPreferredSize(new Dimension(400, 500));
 		panel_1.add(scrollPane);
 		
 		table = new JTable();
+		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(new DefaultTableModel(
@@ -116,7 +122,7 @@ public class Explorar extends JPanel {
 				"Titulo", "Interprete"
 			}
 		));
-		table.setPreferredSize(new Dimension(400, 477));
+		//table.setPreferredSize(new Dimension(400, 477));
 		scrollPane.setViewportView(table);
 
 	}
