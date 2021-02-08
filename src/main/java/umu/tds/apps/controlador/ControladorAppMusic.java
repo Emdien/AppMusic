@@ -126,10 +126,19 @@ public class ControladorAppMusic {
 
 		// Una vez creada, la persisto en la base de datos
 		// Si ya existe, no hace nada
+		// MODIFICADO  - - No hago la persistencia en el momento de la creación. Tengo que esperar a la confirmacion
 
+		//adaptadorListaReproduccion.registrarListaReproduccion(lr);
+		//adaptadorUsuario.modificarUsuario(usuarioActual);
+		return lr;
+	}
+	
+	
+	// Metodo para guardar una lista que haya sido creada o modificada
+	
+	public void guardarLista(ListaReproduccion lr) {
 		adaptadorListaReproduccion.registrarListaReproduccion(lr);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		return lr;
 	}
 
 
@@ -454,7 +463,7 @@ public class ControladorAppMusic {
 		String titulo = split[1];
 		titulo = titulo.split(".mp3")[0];
 		titulo = titulo.trim();
-		System.out.println(titulo);
+		//System.out.println(titulo);
 
 		Cancion cancion = catalogoCanciones.getCancion(titulo);
 

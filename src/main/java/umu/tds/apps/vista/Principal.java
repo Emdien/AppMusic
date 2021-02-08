@@ -166,7 +166,7 @@ public class Principal {
 		btnNuevaLista.setMinimumSize(new Dimension(225, 50));
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				NuevaLista panel_nl = new NuevaLista();
+				NuevaLista panel_nl = new NuevaLista(frame);
 				body_panel.remove(current_content);
 				body_panel.add(panel_nl, BorderLayout.CENTER);
 				current_content = panel_nl;

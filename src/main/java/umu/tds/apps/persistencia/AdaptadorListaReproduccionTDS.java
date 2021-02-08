@@ -132,7 +132,7 @@ public class AdaptadorListaReproduccionTDS implements IAdaptadorListaReproduccio
 	// Metodos auxiliares   ---  Hacer con lambdas ?
 	
 	
-	private String obtenerCodigosCanciones(LinkedList<Cancion> canciones) {
+	private String obtenerCodigosCanciones(ArrayList<Cancion> canciones) {
 		String aux = "";
 		for (Cancion c : canciones) {
 			aux += c.getCodigo() + " ";

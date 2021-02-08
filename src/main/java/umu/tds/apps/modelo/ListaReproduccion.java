@@ -1,18 +1,19 @@
 package umu.tds.apps.modelo;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ListaReproduccion {
 	private String nombre;
 	private int codigo;
-	private LinkedList<Cancion> canciones;
+	private ArrayList<Cancion> canciones;
 	
 	
 	public ListaReproduccion(String nombre) {
 		super();
 		this.nombre = nombre;
 		this.codigo = 0;
-		this.canciones = new LinkedList<Cancion>();
+		this.canciones = new ArrayList<Cancion>();
 	}
 
 
@@ -21,12 +22,12 @@ public class ListaReproduccion {
 	}
 
 
-	public LinkedList<Cancion> getCanciones() {
+	public ArrayList<Cancion> getCanciones() {
 		return canciones;
 	}
 
 
-	public void setCanciones(LinkedList<Cancion> canciones) {
+	public void setCanciones(ArrayList<Cancion> canciones) {
 		this.canciones = canciones;
 	}
 
