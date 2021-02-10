@@ -4,12 +4,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
@@ -17,6 +19,7 @@ import javax.swing.Box;
 import javax.swing.border.LineBorder;
 
 import umu.tds.apps.controlador.ControladorAppMusic;
+import umu.tds.apps.modelo.ListaReproduccion;
 
 import java.awt.Color;
 import javax.swing.JList;
@@ -25,6 +28,8 @@ import javax.swing.AbstractListModel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class Principal {
 
@@ -53,6 +58,7 @@ public class Principal {
 	
 	
 	private ControladorAppMusic controlador;
+	private LinkedList<ListaReproduccion> playlists;
 	
 	
 	/*public static void main(String[] args) {
@@ -113,6 +119,7 @@ public class Principal {
 		btnMejorar = new JButton("Mejorar tu cuenta");
 		btnMejorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scrollPane.setVisible(false);
 				btnNewButton.setEnabled(true);
 				btnNewButton_1.setEnabled(true);
 				frame.repaint();
@@ -150,6 +157,7 @@ public class Principal {
 		btnExplorar.setMinimumSize(new Dimension(225, 50));
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scrollPane.setVisible(false);
 				Explorar panel_exp = new Explorar(frame);
 				body_panel.remove(current_content);
 				body_panel.add(panel_exp, BorderLayout.CENTER);
@@ -166,6 +174,7 @@ public class Principal {
 		btnNuevaLista.setMinimumSize(new Dimension(225, 50));
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scrollPane.setVisible(false);
 				NuevaLista panel_nl = new NuevaLista(frame);
 				body_panel.remove(current_content);
 				body_panel.add(panel_nl, BorderLayout.CENTER);
@@ -182,6 +191,7 @@ public class Principal {
 		btnReciente.setMinimumSize(new Dimension(225, 50));
 		btnReciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scrollPane.setVisible(false);
 				Reciente panel_rec = new Reciente();
 				body_panel.remove(current_content);
 				body_panel.add(panel_rec, BorderLayout.CENTER);
@@ -198,13 +208,26 @@ public class Principal {
 		btnMisListas.setMinimumSize(new Dimension(225, 50));
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				scrollPane.setVisible(true);
-				MisListas panel_ml = new MisListas();
-				body_panel.remove(current_content);
-				body_panel.add(panel_ml, BorderLayout.CENTER);
-				current_content = panel_ml;
-				frame.repaint();
-				frame.revalidate();
+				
+				if (update_playlist_list()) {				// Existen listas
+					list.setSelectedIndex(0);
+					MisListas panel_ml = new MisListas(frame);
+					panel_ml.update_selected_playlist(list.getSelectedIndex());
+					body_panel.remove(current_content);
+					body_panel.add(panel_ml, BorderLayout.CENTER);
+					current_content = panel_ml;
+					frame.repaint();
+					frame.revalidate();
+					
+				} else {
+					
+					// JDialog indicando que no existen listas.
+					
+					
+					
+				}
+				
+				
 			}
 		});
 		btnMisListas.setMaximumSize(new Dimension(225, 50));
@@ -213,6 +236,7 @@ public class Principal {
 		btnNewButton = new JButton("Canciones mas reproducidas");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scrollPane.setVisible(false);
 				MasReproducidas panel_mr = new MasReproducidas();
 				body_panel.remove(current_content);
 				body_panel.add(panel_mr, BorderLayout.CENTER);
@@ -243,16 +267,20 @@ public class Principal {
 		scrollPane.setPreferredSize(new Dimension(225, 240));
 		sidebar_playlists.add(scrollPane);
 		
-		list = new JList();
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4", "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
+		list = new JList<String>();
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				MisListas panel_ml = new MisListas(frame);
+				panel_ml.update_selected_playlist(list.getSelectedIndex());
+				body_panel.remove(current_content);
+				body_panel.add(panel_ml, BorderLayout.CENTER);
+				current_content = panel_ml;
+				frame.repaint();
+				frame.revalidate();
 			}
 		});
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		list.setModel(model);
 		scrollPane.setViewportView(list);
 		
 		action_panel = new JPanel();
@@ -298,5 +326,22 @@ public class Principal {
 		
 		current_content = content_panel;
 	}
-
+	
+	
+	public boolean update_playlist_list() {
+		playlists = (LinkedList<ListaReproduccion>) controlador.getAllListasReproduccion();
+		if (playlists != null) {
+			DefaultListModel<String> dlm = new DefaultListModel<String>();
+			
+			for (ListaReproduccion lr : playlists) {
+				String nombrePlaylist = lr.getNombre();
+				dlm.addElement(nombrePlaylist);
+			}
+			list.setModel(dlm);
+			scrollPane.setVisible(true);
+			return true;
+		} else return false;
+	}
+	
+	
 }

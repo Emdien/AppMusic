@@ -82,15 +82,18 @@ public class NuevaLista extends JPanel {
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				String nombre = txtNombre.getText();
+				if(nombre.equals("")) return;
+				
 				panelBusqueda.setVisible(true);
 				panelContenido.setVisible(true);
 				panelCommand.setVisible(true);
-				String nombre = txtNombre.getText();
 				
-				LinkedList<ListaReproduccion> testl =  (LinkedList<ListaReproduccion>) controlador.getAllListasReproduccion();
+				
+				/*LinkedList<ListaReproduccion> testl =  (LinkedList<ListaReproduccion>) controlador.getAllListasReproduccion();
 				for (ListaReproduccion l : testl) {
 					System.out.println(l.getNombre());
-				}
+				}*/
 				
 				
 				playlist =  controlador.crearNuevaLista(nombre);
