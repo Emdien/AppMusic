@@ -368,10 +368,13 @@ public class ControladorAppMusic {
 
 	// Metodo para imprimir en pdf las listas de reproduccion del usuario (Premium)
 
-	public boolean printPDF() throws DocumentException {
+	public boolean printPDF(String folderpath) throws DocumentException {
 		FileOutputStream archivo = null;
+		String path = folderpath + "\\" + usuarioActual.getNombre() + "_playlists.pdf";
+		System.out.println(path);
+		
 		try {
-			archivo = new FileOutputStream("E:\\AppMusic\\" + usuarioActual.getNombre() + "_playlists.pdf");
+			archivo = new FileOutputStream(path);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

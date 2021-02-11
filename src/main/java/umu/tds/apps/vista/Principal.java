@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -30,6 +32,9 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionListener;
+
+import com.itextpdf.text.DocumentException;
+
 import javax.swing.event.ListSelectionEvent;
 
 public class Principal {
@@ -261,6 +266,26 @@ public class Principal {
 		sidebar_buttons.add(btnNewButton);
 		
 		btnNewButton_1 = new JButton("Imprimir Playlists");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser chooser = new JFileChooser();
+				chooser.setCurrentDirectory(new java.io.File("."));
+				chooser.setDialogTitle("Selecciona carpeta de destino");
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				chooser.setAcceptAllFileFilterUsed(false);
+				
+				if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+					String path = chooser.getSelectedFile().getAbsolutePath();
+					System.out.println(path);
+					try {
+						controlador.printPDF(path);
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.setPreferredSize(new Dimension(225, 50));
 		btnNewButton_1.setMinimumSize(new Dimension(225, 50));
