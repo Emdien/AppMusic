@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JSeparator;
@@ -166,6 +168,10 @@ public class Login {
 					Principal windowP = new Principal();
 					frame.dispose();
 					
+				} else {
+					JOptionPane.showMessageDialog(frame,
+							"Nombre de usuario o contrase\u00F1a no valido",
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}

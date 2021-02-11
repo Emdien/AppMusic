@@ -23,6 +23,7 @@ import umu.tds.apps.modelo.ListaReproduccion;
 
 import java.awt.Color;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
 import javax.swing.JScrollBar;
@@ -221,7 +222,9 @@ public class Principal {
 					
 				} else {
 					
-					// JDialog indicando que no existen listas.
+					JOptionPane.showMessageDialog(frame,
+							"No existe ninguna playlist actualmente",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					
 					
 					

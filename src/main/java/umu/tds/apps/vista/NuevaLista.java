@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -83,7 +84,12 @@ public class NuevaLista extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String nombre = txtNombre.getText();
-				if(nombre.equals("")) return;
+				if(nombre.equals("")) {
+					JOptionPane.showMessageDialog(ventana,
+							"Nombre de playlist no valido",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				
 				panelBusqueda.setVisible(true);
 				panelContenido.setVisible(true);
@@ -105,6 +111,11 @@ public class NuevaLista extends JPanel {
 				if (!cancionesPlaylist.isEmpty()) {
 					// JDialog indicando que se va a modificar la playlist
 					// Mover esto a una funcion? Codigo repetido.
+					
+					JOptionPane.showMessageDialog(ventana,
+							"Playlist ya creada. Se va a proceder a modificarla",
+							"Aviso", JOptionPane.WARNING_MESSAGE);
+					
 					DefaultTableModel dtm = (DefaultTableModel) tablePlaylist.getModel();
 					dtm.setRowCount(0);
 					for (Cancion c : cancionesPlaylist) {
@@ -185,11 +196,7 @@ public class NuevaLista extends JPanel {
 				DefaultTableModel dtm = (DefaultTableModel) tableCanciones.getModel();
 				dtm.setRowCount(0);
 				resultadoBusqueda = new ArrayList<>();
-				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), txtEstilo.getText());
-				
-				// Comprobar que en la lista de canciones no hay canciones ya añadidas a la playlsit
-				// TODO Creo que ya esta
-				
+				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), txtEstilo.getText());				
 				
 				Iterator<Cancion> it = resultadoBusqueda.iterator();
 				
@@ -387,6 +394,7 @@ public class NuevaLista extends JPanel {
 		panelBusqueda.setVisible(false);
 		panelContenido.setVisible(false);
 		panelCommand.setVisible(false);
+		btnEliminar.setVisible(false);
 		
 	}
 
