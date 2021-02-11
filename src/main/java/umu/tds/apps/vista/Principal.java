@@ -107,7 +107,12 @@ public class Principal {
 		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				controlador.logout();
+				Login windowL = new Login();
+				frame.dispose();
 			}
+			
+			
 		});
 		
 		lblUsuario = new JLabel();

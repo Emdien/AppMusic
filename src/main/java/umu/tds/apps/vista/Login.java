@@ -58,6 +58,7 @@ public class Login {
 	public Login() {
 		controlador = ControladorAppMusic.getUnicaInstancia();
 		initialize();
+		this.frame.setVisible(true);
 	}
 
 	/**
