@@ -38,6 +38,9 @@ import com.itextpdf.text.DocumentException;
 import javax.swing.event.ListSelectionEvent;
 
 public class Principal {
+	
+	// Referencia para que otros paneles puedan hacer llamadas a la ventana principal
+	private static Principal instanciaPrincipal;
 
 	private JFrame frame;
 	private JPanel header_panel;
@@ -59,8 +62,8 @@ public class Principal {
 	private JPanel current_content;
 	private JScrollPane scrollPane;
 	private JList list;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
+	private JButton btnMasReproducidas;
+	private JButton btnImprimir;
 	
 	
 	private ControladorAppMusic controlador;
@@ -87,6 +90,7 @@ public class Principal {
 		this.controlador = ControladorAppMusic.getUnicaInstancia();
 		initialize();
 		this.frame.setVisible(true);
+		instanciaPrincipal = this;
 	}
 
 	/**
@@ -131,11 +135,13 @@ public class Principal {
 		btnMejorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(false);
-				btnNewButton.setEnabled(true);
-				btnNewButton_1.setEnabled(true);
+				MejorarCuenta panel_mc = new MejorarCuenta(frame);
+				body_panel.remove(current_content);
+				body_panel.add(panel_mc, BorderLayout.CENTER);
+				current_content = panel_mc;
 				frame.repaint();
 				frame.revalidate();
-				System.out.println("test");
+				//System.out.println("test");
 			}
 		});
 		header_panel.add(btnMejorar);
@@ -246,8 +252,8 @@ public class Principal {
 		btnMisListas.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnMisListas);
 		
-		btnNewButton = new JButton("Canciones mas reproducidas");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnMasReproducidas = new JButton("Canciones mas reproducidas");
+		btnMasReproducidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(false);
 				MasReproducidas panel_mr = new MasReproducidas();
@@ -259,14 +265,14 @@ public class Principal {
 				
 			}
 		});
-		btnNewButton.setEnabled(false);
-		btnNewButton.setMinimumSize(new Dimension(225, 50));
-		btnNewButton.setMaximumSize(new Dimension(225, 50));
-		btnNewButton.setPreferredSize(new Dimension(225, 50));
-		sidebar_buttons.add(btnNewButton);
+		btnMasReproducidas.setEnabled(false);
+		btnMasReproducidas.setMinimumSize(new Dimension(225, 50));
+		btnMasReproducidas.setMaximumSize(new Dimension(225, 50));
+		btnMasReproducidas.setPreferredSize(new Dimension(225, 50));
+		sidebar_buttons.add(btnMasReproducidas);
 		
-		btnNewButton_1 = new JButton("Imprimir Playlists");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnImprimir = new JButton("Imprimir Playlists");
+		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setCurrentDirectory(new java.io.File("."));
@@ -286,11 +292,11 @@ public class Principal {
 				}
 			}
 		});
-		btnNewButton_1.setEnabled(false);
-		btnNewButton_1.setPreferredSize(new Dimension(225, 50));
-		btnNewButton_1.setMinimumSize(new Dimension(225, 50));
-		btnNewButton_1.setMaximumSize(new Dimension(225, 50));
-		sidebar_buttons.add(btnNewButton_1);
+		btnImprimir.setEnabled(false);
+		btnImprimir.setPreferredSize(new Dimension(225, 50));
+		btnImprimir.setMinimumSize(new Dimension(225, 50));
+		btnImprimir.setMaximumSize(new Dimension(225, 50));
+		sidebar_buttons.add(btnImprimir);
 		
 		sidebar_playlists = new JPanel();
 		sidebar_panel.add(sidebar_playlists, BorderLayout.CENTER);
@@ -358,6 +364,7 @@ public class Principal {
 		content_panel.add(lblNewLabel);
 		
 		current_content = content_panel;
+		enablePremiumFeatures();
 	}
 	
 	
@@ -374,6 +381,17 @@ public class Principal {
 			scrollPane.setVisible(true);
 			return true;
 		} else return false;
+	}
+	
+	public void enablePremiumFeatures() {
+		if (controlador.getUsuarioActual().isPremium()) {
+			btnImprimir.setEnabled(true);
+			btnMasReproducidas.setEnabled(true);
+		}
+	}
+	
+	public static Principal getInstancia() {
+		return instanciaPrincipal;
 	}
 	
 	

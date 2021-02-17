@@ -51,7 +51,7 @@ public class Usuario {
 		aux = new DescuentoEdad().generarDescuento(this);	// Puedo utilizar this aqui? Si no, paso solo la fecha de nacimiento
 		if (aux != null) return aux;
 		
-		// Casi DescuentoTemporal
+		// Caso DescuentoTemporal
 		aux = new DescuentoTemporal().generarDescuento(this);
 		if (aux != null) return aux;
 
