@@ -23,6 +23,8 @@ import umu.tds.apps.modelo.Cancion;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class Explorar extends JPanel {
 	private JTextField txtInterprete;
@@ -124,6 +126,16 @@ public class Explorar extends JPanel {
 		));
 		//table.setPreferredSize(new Dimension(400, 477));
 		scrollPane.setViewportView(table);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				Cancion c = resultadoBusqueda.get(table.getSelectedRow());
+				Principal p = Principal.getInstancia();
+				p.setCurrentSong(c);
+				
+			}
+		});
 
 	}
 	

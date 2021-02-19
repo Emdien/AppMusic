@@ -21,6 +21,7 @@ import javax.swing.Box;
 import javax.swing.border.LineBorder;
 
 import umu.tds.apps.controlador.ControladorAppMusic;
+import umu.tds.apps.modelo.Cancion;
 import umu.tds.apps.modelo.ListaReproduccion;
 
 import java.awt.Color;
@@ -43,6 +44,8 @@ public class Principal {
 	
 	// Referencia para que otros paneles puedan hacer llamadas a la ventana principal
 	private static Principal instanciaPrincipal;
+	private Cancion cancionActual;
+	private ListaReproduccion playlistActual;
 
 	private JFrame frame;
 	private JPanel header_panel;
@@ -401,6 +404,11 @@ public class Principal {
 			btnImprimir.setEnabled(true);
 			btnMasReproducidas.setEnabled(true);
 		}
+	}
+	
+	public void setCurrentSong(Cancion c) {
+		cancionActual = c;
+		System.out.println("Cancion actual fijada: " + c.getTitulo());
 	}
 	
 	public static Principal getInstancia() {
