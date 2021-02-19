@@ -36,6 +36,8 @@ import javax.swing.event.ListSelectionListener;
 import com.itextpdf.text.DocumentException;
 
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.ImageIcon;
+import java.awt.Point;
 
 public class Principal {
 	
@@ -106,7 +108,7 @@ public class Principal {
 		header_panel = new JPanel();
 		header_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		FlowLayout flowLayout = (FlowLayout) header_panel.getLayout();
-		flowLayout.setVgap(12);
+		flowLayout.setVgap(6);
 		flowLayout.setAlignment(FlowLayout.TRAILING);
 		header_panel.setMinimumSize(new Dimension(10, 50));
 		header_panel.setMaximumSize(new Dimension(32767, 50));
@@ -114,6 +116,7 @@ public class Principal {
 		frame.getContentPane().add(header_panel);
 		
 		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
+		btnLogout.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Logout.png")));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controlador.logout();
@@ -132,6 +135,7 @@ public class Principal {
 		header_panel.add(rigidArea_1);
 		
 		btnMejorar = new JButton("Mejorar tu cuenta");
+		btnMejorar.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Premium.png")));
 		btnMejorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(false);
@@ -170,6 +174,7 @@ public class Principal {
 		sidebar_buttons.setLayout(new BoxLayout(sidebar_buttons, BoxLayout.Y_AXIS));
 		
 		btnExplorar = new JButton("Explorar");
+		btnExplorar.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Search.png")));
 		btnExplorar.setPreferredSize(new Dimension(225, 50));
 		btnExplorar.setMinimumSize(new Dimension(225, 50));
 		btnExplorar.addActionListener(new ActionListener() {
@@ -187,6 +192,7 @@ public class Principal {
 		sidebar_buttons.add(btnExplorar);
 		
 		btnNuevaLista = new JButton("Nueva lista");
+		btnNuevaLista.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/NewList.png")));
 		btnNuevaLista.setPreferredSize(new Dimension(225, 50));
 		btnNuevaLista.setMinimumSize(new Dimension(225, 50));
 		btnNuevaLista.addActionListener(new ActionListener() {
@@ -204,6 +210,7 @@ public class Principal {
 		sidebar_buttons.add(btnNuevaLista);
 		
 		btnReciente = new JButton("Reciente");
+		btnReciente.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Recent.png")));
 		btnReciente.setPreferredSize(new Dimension(225, 50));
 		btnReciente.setMinimumSize(new Dimension(225, 50));
 		btnReciente.addActionListener(new ActionListener() {
@@ -221,6 +228,7 @@ public class Principal {
 		sidebar_buttons.add(btnReciente);
 		
 		btnMisListas = new JButton("Mis listas");
+		btnMisListas.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/MyLists.png")));
 		btnMisListas.setPreferredSize(new Dimension(225, 50));
 		btnMisListas.setMinimumSize(new Dimension(225, 50));
 		btnMisListas.addActionListener(new ActionListener() {
@@ -253,6 +261,7 @@ public class Principal {
 		sidebar_buttons.add(btnMisListas);
 		
 		btnMasReproducidas = new JButton("Canciones mas reproducidas");
+		btnMasReproducidas.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Popular.png")));
 		btnMasReproducidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(false);
@@ -272,6 +281,7 @@ public class Principal {
 		sidebar_buttons.add(btnMasReproducidas);
 		
 		btnImprimir = new JButton("Imprimir Playlists");
+		btnImprimir.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Print.png")));
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
@@ -324,12 +334,13 @@ public class Principal {
 		
 		action_panel = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) action_panel.getLayout();
-		flowLayout_1.setVgap(20);
+		flowLayout_1.setVgap(13);
 		action_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		action_panel.setPreferredSize(new Dimension(10, 65));
 		body_panel.add(action_panel, BorderLayout.SOUTH);
 		
-		btnPrevious = new JButton("#Previous");
+		btnPrevious = new JButton("");
+		btnPrevious.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PreviousButton.png")));
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -339,7 +350,8 @@ public class Principal {
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		action_panel.add(rigidArea_2);
 		
-		btnPlay = new JButton("#Play/Stop\r\n");
+		btnPlay = new JButton("");
+		btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PlayButton.png")));
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -349,7 +361,8 @@ public class Principal {
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		action_panel.add(rigidArea_3);
 		
-		btnNext = new JButton("#Next\r\n");
+		btnNext = new JButton("");
+		btnNext.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/NextButton.png")));
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
