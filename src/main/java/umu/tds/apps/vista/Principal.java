@@ -411,6 +411,10 @@ public class Principal {
 		System.out.println("Cancion actual fijada: " + c.getTitulo());
 	}
 	
+	public void setCurrentPlaylist(ListaReproduccion l) {
+		playlistActual = l;
+	}
+	
 	public static Principal getInstancia() {
 		return instanciaPrincipal;
 	}
