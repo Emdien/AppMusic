@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import umu.tds.apps.controlador.ControladorAppMusic;
@@ -63,6 +65,19 @@ public class MisListas extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setDefaultEditor(Object.class, null);
 		scrollPane.setViewportView(table);
+		
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				int indiceCancion = table.getSelectedRow();
+				Principal p = Principal.getInstancia();
+				p.setCurrentPlaylist(playlist_actual, indiceCancion);
+				
+			}
+		});
+		
+		
 	}
 	
 	public void update_selected_playlist(int value) {

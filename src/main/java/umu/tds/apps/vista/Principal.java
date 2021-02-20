@@ -374,6 +374,32 @@ public class Principal {
 		btnPrevious.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PreviousButton.png")));
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+
+				if (playlistActual != null) {
+					if (playlistIndex == 0) {
+						playlistIndex = playlistActual.getCanciones().size()-1;
+						cancionActual = playlistActual.getCanciones().get(playlistIndex);
+						controlador.reproducirCancion(cancionActual);
+						btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PauseButton.png")));
+						estadoReproductor = PLAYING;
+						lblSelectedSong.setText(cancionActual.getTitulo());
+						lblSelectedArtist.setText(cancionActual.getInterprete());
+						frame.repaint();
+						frame.revalidate();
+					} else {
+						playlistIndex--;
+						cancionActual = playlistActual.getCanciones().get(playlistIndex);
+						controlador.reproducirCancion(cancionActual);
+						btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PauseButton.png")));
+						estadoReproductor = PLAYING;
+						lblSelectedSong.setText(cancionActual.getTitulo());
+						lblSelectedArtist.setText(cancionActual.getInterprete());
+						frame.repaint();
+						frame.revalidate();
+					}
+				}
+				
 			}
 		});
 		
@@ -411,6 +437,32 @@ public class Principal {
 		btnNext.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/NextButton.png")));
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				if (playlistActual != null) {
+					if (playlistIndex == playlistActual.getCanciones().size()-1) {
+						playlistIndex = 0;
+						cancionActual = playlistActual.getCanciones().get(playlistIndex);
+						controlador.reproducirCancion(cancionActual);
+						btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PauseButton.png")));
+						estadoReproductor = PLAYING;
+						lblSelectedSong.setText(cancionActual.getTitulo());
+						lblSelectedArtist.setText(cancionActual.getInterprete());
+						frame.repaint();
+						frame.revalidate();
+					} else {
+						playlistIndex++;
+						cancionActual = playlistActual.getCanciones().get(playlistIndex);
+						controlador.reproducirCancion(cancionActual);
+						btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PauseButton.png")));
+						estadoReproductor = PLAYING;
+						lblSelectedSong.setText(cancionActual.getTitulo());
+						lblSelectedArtist.setText(cancionActual.getInterprete());
+						frame.repaint();
+						frame.revalidate();
+					}
+				}
+				
+				
 			}
 		});
 		
@@ -451,6 +503,8 @@ public class Principal {
 	public void setCurrentSong(Cancion c) {
 		lblSelectedArtist.setVisible(true);
 		lblSelectedSong.setVisible(true);
+		playlistActual = null;
+		playlistIndex = 0;
 		
 		if (cancionActual == null || cancionActual != c) {
 			cancionActual = c;
@@ -461,8 +515,29 @@ public class Principal {
 		} 
 	}
 	
-	public void setCurrentPlaylist(ListaReproduccion l) {
-		playlistActual = l;
+	public void setCurrentPlaylist(ListaReproduccion l, int indice) {
+		
+		lblSelectedArtist.setVisible(true);
+		lblSelectedSong.setVisible(true);
+		
+		if (playlistActual == null || playlistActual != l) {
+			playlistActual = l;
+			playlistIndex = indice;
+			cancionActual = playlistActual.getCanciones().get(playlistIndex);
+			lblSelectedSong.setText(cancionActual.getTitulo());
+			lblSelectedArtist.setText(cancionActual.getInterprete());
+			frame.repaint();
+			frame.revalidate();
+		} else {
+			playlistIndex = indice;
+			cancionActual = playlistActual.getCanciones().get(playlistIndex);
+			lblSelectedSong.setText(cancionActual.getTitulo());
+			lblSelectedArtist.setText(cancionActual.getInterprete());
+			frame.repaint();
+			frame.revalidate();
+		}
+		
+		
 	}
 	
 	public static Principal getInstancia() {
