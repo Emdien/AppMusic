@@ -39,6 +39,7 @@ import com.itextpdf.text.DocumentException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Point;
+import javax.swing.border.MatteBorder;
 
 public class Principal {
 	
@@ -46,6 +47,7 @@ public class Principal {
 	private static Principal instanciaPrincipal;
 	private Cancion cancionActual;
 	private ListaReproduccion playlistActual;
+	private int playlistIndex;
 
 	private JFrame frame;
 	private JPanel header_panel;
@@ -73,20 +75,11 @@ public class Principal {
 	
 	private ControladorAppMusic controlador;
 	private LinkedList<ListaReproduccion> playlists;
-	
-	
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Principal window = new Principal();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
+	private JPanel panel;
+	private JPanel panel_1;
+	private JLabel lblCancionSeleccionada;
+	private JLabel lblSelectedSong;
+	private JLabel lblSelectedArtist;
 
 	/**
 	 * Create the application.
@@ -109,7 +102,7 @@ public class Principal {
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 		
 		header_panel = new JPanel();
-		header_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		header_panel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		FlowLayout flowLayout = (FlowLayout) header_panel.getLayout();
 		flowLayout.setVgap(6);
 		flowLayout.setAlignment(FlowLayout.TRAILING);
@@ -164,7 +157,7 @@ public class Principal {
 		sidebar_panel = new JPanel();
 		sidebar_panel.setMinimumSize(new Dimension(225, 10));
 		sidebar_panel.setMaximumSize(new Dimension(225, 32767));
-		sidebar_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		sidebar_panel.setBorder(new MatteBorder(0, 0, 0, 1, (Color) new Color(0, 0, 0)));
 		sidebar_panel.setPreferredSize(new Dimension(225, 10));
 		body_panel.add(sidebar_panel, BorderLayout.WEST);
 		sidebar_panel.setLayout(new BorderLayout(0, 0));
@@ -316,7 +309,7 @@ public class Principal {
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setVisible(false);
-		scrollPane.setPreferredSize(new Dimension(225, 240));
+		scrollPane.setPreferredSize(new Dimension(225, 250));
 		sidebar_playlists.add(scrollPane);
 		
 		list = new JList<String>();
@@ -336,41 +329,71 @@ public class Principal {
 		scrollPane.setViewportView(list);
 		
 		action_panel = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) action_panel.getLayout();
-		flowLayout_1.setVgap(13);
-		action_panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		action_panel.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		action_panel.setPreferredSize(new Dimension(10, 65));
 		body_panel.add(action_panel, BorderLayout.SOUTH);
+		action_panel.setLayout(new BoxLayout(action_panel, BoxLayout.X_AXIS));
+		
+		panel = new JPanel();
+		panel.setBorder(new MatteBorder(0, 0, 0, 1, (Color) new Color(0, 0, 0)));
+		panel.setMaximumSize(new Dimension(225, 65));
+		panel.setPreferredSize(new Dimension(225, 65));
+		action_panel.add(panel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		lblCancionSeleccionada = new JLabel("Cancion seleccionada:");
+		lblCancionSeleccionada.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(lblCancionSeleccionada);
+		
+		lblSelectedSong = new JLabel("");
+		lblSelectedSong.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(lblSelectedSong);
+		lblSelectedSong.setVisible(false);
+		
+		lblSelectedArtist = new JLabel("");
+		lblSelectedArtist.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(lblSelectedArtist);
+		lblSelectedArtist.setVisible(false);
+		
+		panel_1 = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panel_1.getLayout();
+		flowLayout_1.setVgap(13);
+		panel_1.setPreferredSize(new Dimension(50, 10));
+		action_panel.add(panel_1);
 		
 		btnPrevious = new JButton("");
+		panel_1.add(btnPrevious);
 		btnPrevious.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PreviousButton.png")));
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		action_panel.add(btnPrevious);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
-		action_panel.add(rigidArea_2);
+		panel_1.add(rigidArea_2);
 		
 		btnPlay = new JButton("");
+		panel_1.add(btnPlay);
 		btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PlayButton.png")));
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				if (cancionActual != null) {
+					controlador.reproducirCancion(cancionActual);
+				}
 			}
 		});
-		action_panel.add(btnPlay);
 		
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
-		action_panel.add(rigidArea_3);
+		panel_1.add(rigidArea_3);
 		
 		btnNext = new JButton("");
+		panel_1.add(btnNext);
 		btnNext.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/NextButton.png")));
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		action_panel.add(btnNext);
 		
 		content_panel = new JPanel();
 		content_panel.setMaximumSize(new Dimension(975, 32767));
@@ -407,8 +430,16 @@ public class Principal {
 	}
 	
 	public void setCurrentSong(Cancion c) {
-		cancionActual = c;
-		System.out.println("Cancion actual fijada: " + c.getTitulo());
+		lblSelectedArtist.setVisible(true);
+		lblSelectedSong.setVisible(true);
+		
+		if (cancionActual == null || cancionActual != c) {
+			cancionActual = c;
+			lblSelectedSong.setText(c.getTitulo());
+			lblSelectedArtist.setText(c.getInterprete());
+			frame.repaint();
+			frame.revalidate();
+		} 
 	}
 	
 	public void setCurrentPlaylist(ListaReproduccion l) {

@@ -233,30 +233,55 @@ public class ControladorAppMusic {
 		if (mediaPlayer == null) {			// Primera vez que se reproduce una cancion
 			
 			mediaPlayer = new MediaPlayer(hit);
+			mediaPlayer.setOnEndOfMedia(new Runnable() {
+				public void run() {
+					mediaPlayer.stop();
+				}
+			});
 			mediaPlayer.play();
 			c.setNumReproducciones(c.getNumReproducciones()+1);
 			addCancionReciente(c);
 			
 		}
 		else {		// Si ya se ha creado un MediaPlayer anteriormente (ya se ha escuchado alguna cancion)
-			if (mediaPlayer.getStatus() == Status.PAUSED) {
-				
+			if (mediaPlayer.getStatus() == Status.STOPPED) {
+				mediaPlayer.play();
+				c.setNumReproducciones(c.getNumReproducciones()+1);
+				//addCancionReciente(c);
+			}
+			else if (mediaPlayer.getStatus() == Status.PAUSED) {
+				System.out.println("what");
 				if (mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo si la cancion era la misma que se estaba reproduciendo
 					mediaPlayer.play();												// Si lo es, reproduzco
 					
 				} 
 				else {																// Si no es la misma cancion, cambio el media player con esa cancion
 					mediaPlayer = new MediaPlayer(hit);
+					mediaPlayer.setOnEndOfMedia(new Runnable() {
+						public void run() {
+							mediaPlayer.stop();
+						}
+					});
 					mediaPlayer.play();
 					c.setNumReproducciones(c.getNumReproducciones()+1);				// Cuando es una cancion distinta, incremento numero de reproducciones
 					addCancionReciente(c);
 				}
 			} else if (mediaPlayer.getStatus() == Status.PLAYING) {					// Si se cambia la cancion mientras que se esta escuchando otra
 				if (!mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo que la cancion no sea la misma
+					mediaPlayer.pause();
 					mediaPlayer = new MediaPlayer(hit);
+					mediaPlayer.setOnEndOfMedia(new Runnable() {
+						public void run() {
+							mediaPlayer.stop();
+						}
+					});
 					mediaPlayer.play();
 					c.setNumReproducciones(c.getNumReproducciones()+1);
 					addCancionReciente(c);
+					System.out.println("CHANGING");
+				} else {
+					System.out.println(mediaPlayer.getStatus());
+					
 				}
 			}
 		}	
