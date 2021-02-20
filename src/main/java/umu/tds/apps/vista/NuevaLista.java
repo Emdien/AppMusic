@@ -336,6 +336,7 @@ public class NuevaLista extends JPanel {
 		tablePlaylist = new JTable();
 		tablePlaylist.setFillsViewportHeight(true);
 		tablePlaylist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tablePlaylist.setDefaultEditor(Object.class, null);
 		tablePlaylist.setModel(new DefaultTableModel(
 			new Object[][] {
 			},

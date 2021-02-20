@@ -43,11 +43,14 @@ import javax.swing.border.MatteBorder;
 
 public class Principal {
 	
+	
+	private static final int PAUSED = 0;
+	private static final int PLAYING = 1;
+	private int estadoReproductor = PAUSED;
+	
 	// Referencia para que otros paneles puedan hacer llamadas a la ventana principal
 	private static Principal instanciaPrincipal;
-	private Cancion cancionActual;
-	private ListaReproduccion playlistActual;
-	private int playlistIndex;
+	
 
 	private JFrame frame;
 	private JPanel header_panel;
@@ -71,15 +74,20 @@ public class Principal {
 	private JList list;
 	private JButton btnMasReproducidas;
 	private JButton btnImprimir;
-	
-	
-	private ControladorAppMusic controlador;
-	private LinkedList<ListaReproduccion> playlists;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JLabel lblCancionSeleccionada;
 	private JLabel lblSelectedSong;
 	private JLabel lblSelectedArtist;
+	
+	
+	private ControladorAppMusic controlador;
+	private LinkedList<ListaReproduccion> playlists;
+	private Cancion cancionActual;
+	private ListaReproduccion playlistActual;
+	private int playlistIndex;
+	
+
 
 	/**
 	 * Create the application.
@@ -379,7 +387,18 @@ public class Principal {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (cancionActual != null) {
-					controlador.reproducirCancion(cancionActual);
+					
+					if (estadoReproductor == PAUSED) {
+						controlador.reproducirCancion(cancionActual);
+						btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PauseButton.png")));
+						estadoReproductor = PLAYING;
+					} else if (estadoReproductor == PLAYING) {
+						controlador.pausarCancion();
+						btnPlay.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/PlayButton.png")));
+						estadoReproductor = PAUSED;
+					}
+					
+					
 				}
 			}
 		});
