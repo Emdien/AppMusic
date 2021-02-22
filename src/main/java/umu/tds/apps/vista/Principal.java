@@ -40,6 +40,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Point;
 import javax.swing.border.MatteBorder;
+import javax.swing.SwingConstants;
 
 public class Principal {
 	
@@ -177,7 +178,8 @@ public class Principal {
 		sidebar_panel.add(sidebar_buttons, BorderLayout.NORTH);
 		sidebar_buttons.setLayout(new BoxLayout(sidebar_buttons, BoxLayout.Y_AXIS));
 		
-		btnExplorar = new JButton("Explorar");
+		btnExplorar = new JButton("Explorar Canciones");
+		btnExplorar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnExplorar.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Search.png")));
 		btnExplorar.setPreferredSize(new Dimension(225, 50));
 		btnExplorar.setMinimumSize(new Dimension(225, 50));
@@ -195,7 +197,8 @@ public class Principal {
 		btnExplorar.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnExplorar);
 		
-		btnNuevaLista = new JButton("Nueva lista");
+		btnNuevaLista = new JButton("Nueva Playlist");
+		btnNuevaLista.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNuevaLista.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/NewList.png")));
 		btnNuevaLista.setPreferredSize(new Dimension(225, 50));
 		btnNuevaLista.setMinimumSize(new Dimension(225, 50));
@@ -213,14 +216,15 @@ public class Principal {
 		btnNuevaLista.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnNuevaLista);
 		
-		btnReciente = new JButton("Reciente");
+		btnReciente = new JButton("Canciones Recientes");
+		btnReciente.setHorizontalAlignment(SwingConstants.LEFT);
 		btnReciente.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Recent.png")));
 		btnReciente.setPreferredSize(new Dimension(225, 50));
 		btnReciente.setMinimumSize(new Dimension(225, 50));
 		btnReciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(false);
-				Reciente panel_rec = new Reciente();
+				Reciente panel_rec = new Reciente(frame);
 				body_panel.remove(current_content);
 				body_panel.add(panel_rec, BorderLayout.CENTER);
 				current_content = panel_rec;
@@ -231,7 +235,8 @@ public class Principal {
 		btnReciente.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnReciente);
 		
-		btnMisListas = new JButton("Mis listas");
+		btnMisListas = new JButton("Mis Playlists");
+		btnMisListas.setHorizontalAlignment(SwingConstants.LEFT);
 		btnMisListas.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/MyLists.png")));
 		btnMisListas.setPreferredSize(new Dimension(225, 50));
 		btnMisListas.setMinimumSize(new Dimension(225, 50));
@@ -264,12 +269,13 @@ public class Principal {
 		btnMisListas.setMaximumSize(new Dimension(225, 50));
 		sidebar_buttons.add(btnMisListas);
 		
-		btnMasReproducidas = new JButton("Canciones mas reproducidas");
+		btnMasReproducidas = new JButton("Canciones mas Populares");
+		btnMasReproducidas.setHorizontalAlignment(SwingConstants.LEFT);
 		btnMasReproducidas.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Popular.png")));
 		btnMasReproducidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane.setVisible(false);
-				MasReproducidas panel_mr = new MasReproducidas();
+				MasReproducidas panel_mr = new MasReproducidas(frame);
 				body_panel.remove(current_content);
 				body_panel.add(panel_mr, BorderLayout.CENTER);
 				current_content = panel_mr;
@@ -285,6 +291,7 @@ public class Principal {
 		sidebar_buttons.add(btnMasReproducidas);
 		
 		btnImprimir = new JButton("Imprimir Playlists");
+		btnImprimir.setHorizontalAlignment(SwingConstants.LEFT);
 		btnImprimir.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/Print.png")));
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -300,7 +307,6 @@ public class Principal {
 					try {
 						controlador.printPDF(path);
 					} catch (DocumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

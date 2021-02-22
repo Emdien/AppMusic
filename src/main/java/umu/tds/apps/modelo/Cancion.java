@@ -61,7 +61,7 @@ public class Cancion {
 		this.estilo = estilo;
 	}
 
-	public int getNumReproducciones() {
+	public Integer getNumReproducciones() {
 		return numReproducciones;
 	}
 

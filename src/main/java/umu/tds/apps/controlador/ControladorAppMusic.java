@@ -241,12 +241,14 @@ public class ControladorAppMusic {
 			mediaPlayer.play();
 			c.setNumReproducciones(c.getNumReproducciones()+1);
 			addCancionReciente(c);
+			adaptadorCancion.modificarCancion(c);
 			
 		}
 		else {		// Si ya se ha creado un MediaPlayer anteriormente (ya se ha escuchado alguna cancion)
 			if (mediaPlayer.getStatus() == Status.STOPPED) {
 				mediaPlayer.play();
 				c.setNumReproducciones(c.getNumReproducciones()+1);
+				adaptadorCancion.modificarCancion(c);
 				//addCancionReciente(c);
 			}
 			else if (mediaPlayer.getStatus() == Status.PAUSED) {
@@ -265,6 +267,7 @@ public class ControladorAppMusic {
 					mediaPlayer.play();
 					c.setNumReproducciones(c.getNumReproducciones()+1);				// Cuando es una cancion distinta, incremento numero de reproducciones
 					addCancionReciente(c);
+					adaptadorCancion.modificarCancion(c);
 				}
 			} else if (mediaPlayer.getStatus() == Status.PLAYING) {					// Si se cambia la cancion mientras que se esta escuchando otra
 				if (!mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo que la cancion no sea la misma
@@ -278,6 +281,7 @@ public class ControladorAppMusic {
 					mediaPlayer.play();
 					c.setNumReproducciones(c.getNumReproducciones()+1);
 					addCancionReciente(c);
+					adaptadorCancion.modificarCancion(c);
 					System.out.println("CHANGING");
 				} else {
 					System.out.println(mediaPlayer.getStatus());
