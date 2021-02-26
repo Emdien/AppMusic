@@ -155,7 +155,7 @@ public class Usuario {
 		}
 		
 		
-		addListaReproduccion(lr);
+		//addListaReproduccion(lr);
 		
 		
 		

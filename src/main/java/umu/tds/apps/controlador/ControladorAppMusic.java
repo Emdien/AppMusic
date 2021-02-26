@@ -128,8 +128,6 @@ public class ControladorAppMusic {
 		// Si ya existe, no hace nada
 		// MODIFICADO  - - No hago la persistencia en el momento de la creación. Tengo que esperar a la confirmacion
 
-		//adaptadorListaReproduccion.registrarListaReproduccion(lr);
-		//adaptadorUsuario.modificarUsuario(usuarioActual);
 		return lr;
 	}
 	
@@ -137,6 +135,7 @@ public class ControladorAppMusic {
 	// Metodo para guardar una lista que haya sido creada o modificada
 	
 	public void guardarLista(ListaReproduccion lr) {
+		usuarioActual.addListaReproduccion(lr);
 		adaptadorListaReproduccion.registrarListaReproduccion(lr);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}

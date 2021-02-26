@@ -96,11 +96,6 @@ public class NuevaLista extends JPanel {
 				panelCommand.setVisible(true);
 				
 				
-				/*LinkedList<ListaReproduccion> testl =  (LinkedList<ListaReproduccion>) controlador.getAllListasReproduccion();
-				for (ListaReproduccion l : testl) {
-					System.out.println(l.getNombre());
-				}*/
-				
 				
 				playlist =  controlador.crearNuevaLista(nombre);
 				cancionesPlaylist = playlist.getCanciones();
