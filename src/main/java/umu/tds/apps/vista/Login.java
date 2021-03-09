@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class Login {
 
@@ -35,6 +36,7 @@ public class Login {
 	private JPanel content_panel_container;
 	private Registro registro;
 	private ControladorAppMusic controlador;
+	private JLabel lblRegistrado;
 
 	/**
 	 * Launch the application.
@@ -194,19 +196,30 @@ public class Login {
 			}
 		});
 		buttons_panel.add(btnNewButton_1);
+		
+		lblRegistrado = new JLabel("* Usuario registrado con exito");
+		lblRegistrado.setForeground(new Color(0, 128, 0));
+		lblRegistrado.setVisible(false);
+		buttons_panel.add(lblRegistrado);
 	}
 
 	public void changeContents(int flag) {	// Flag = 0 no muestra nada (Cancelar) Flag = 1 registrado con exito.
 		content_panel_container.setVisible(true);
 		registro.setVisible(false);
 		frame.setTitle("AppMusic Login");
+		
+		if (flag == 1) {
+			lblRegistrado.setVisible(true);
+		} else {
+			lblRegistrado.setVisible(false);
+		}
+		
 		frame.revalidate();
 		frame.repaint();
 		
 	}
 	
 	private void changeToRegister() {
-		System.out.println("Cambiando a panel de registro");
 		frame.setTitle("AppMusic Registro");
 		registro.setVisible(true);
 		content_panel_container.setVisible(false);

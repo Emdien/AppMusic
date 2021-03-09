@@ -53,9 +53,6 @@ public class Registro extends JPanel {
 		// Se guarda una referencia a la ventana de login para poder mandarle mensajes.
 		login_window = window;
 		
-		// Los contenidos del panel de login se guardan aqui.
-		//login_contents = contents;
-		
 		
 		setMinimumSize(new Dimension(10, 350));
 		setMaximumSize(new Dimension(32767, 350));
@@ -271,7 +268,7 @@ public class Registro extends JPanel {
 					String password = new String(passwordField.getPassword());	// NO ES SEGURO.
 					
 					boolean esRegistrado = login_window.registrar(nombre, apellidos, fecha, email, username, password);
-					System.out.println(esRegistrado);
+
 					if (!esRegistrado) {
 						lblUserRegisteredWarning.setVisible(true);
 					} else {

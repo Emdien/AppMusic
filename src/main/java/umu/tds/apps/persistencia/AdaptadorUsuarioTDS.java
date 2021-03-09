@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import com.sun.tools.javac.parser.ReferenceParser.ParseException;
+//import com.sun.tools.javac.parser.ReferenceParser.ParseException;
 
 import beans.Entidad;
 import beans.Propiedad;

@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.border.MatteBorder;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class Principal implements ActionListener{
 	
@@ -83,6 +84,21 @@ public class Principal implements ActionListener{
 	private Cancion cancionActual;
 	private ListaReproduccion playlistActual;
 	private int playlistIndex;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
+	private JLabel lblNewLabel_6;
+	private JLabel lblNewLabel_7;
+	private Component rigidArea_4;
+	private Component rigidArea_5;
+	private Component rigidArea_6;
+	private JLabel lblNewLabel_8;
+	private Component rigidArea_7;
+	private JLabel lblNewLabel_9;
+	private Component rigidArea_8;
+	private JLabel lblNewLabel_10;
 	
 
 
@@ -290,13 +306,88 @@ public class Principal implements ActionListener{
 		btnNext.addActionListener(this);
 		
 		content_panel = new JPanel();
+		content_panel.setAutoscrolls(true);
 		content_panel.setMaximumSize(new Dimension(975, 32767));
 		body_panel.add(content_panel, BorderLayout.CENTER);
+		content_panel.setLayout(new BoxLayout(content_panel, BoxLayout.Y_AXIS));
 		
-		JLabel lblNewLabel = new JLabel("975 x 585");
+		JLabel lblNewLabel = new JLabel("\u00A1Bienvenido a AppMusic!");
+		lblNewLabel.setForeground(new Color(0, 191, 255));
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 46));
+		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		content_panel.add(lblNewLabel);
 		
 		current_content = content_panel;
+		
+		rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
+		content_panel.add(rigidArea_4);
+		
+		lblNewLabel_1 = new JLabel("En AppMusic, usted...:");
+		lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_1);
+		
+		rigidArea_5 = Box.createRigidArea(new Dimension(20, 20));
+		content_panel.add(rigidArea_5);
+		
+		lblNewLabel_2 = new JLabel("- Puede buscar canciones en el cat\u00E1logo de canciones de AppMusic pulsando Explorar Canciones");
+		lblNewLabel_2.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_2);
+		
+		lblNewLabel_3 = new JLabel("- Crear nuevas listas de reproduccion para escuchar en cualquier momento pulsando Nueva Playlist");
+		lblNewLabel_3.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_3);
+		
+		lblNewLabel_4 = new JLabel("- Escuchar las canciones que a reproducido recientemente pulsando Canciones Recientes");
+		lblNewLabel_4.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_4.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_4);
+		
+		lblNewLabel_5 = new JLabel("- Ver las listas de reproduccion que ha creado pulsando Mis Playlists");
+		lblNewLabel_5.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_5.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_5);
+		
+		rigidArea_6 = Box.createRigidArea(new Dimension(20, 20));
+		rigidArea_6.setMaximumSize(new Dimension(20, 40));
+		rigidArea_6.setPreferredSize(new Dimension(20, 40));
+		content_panel.add(rigidArea_6);
+		
+		lblNewLabel_8 = new JLabel("Adem\u00E1s, puede mejorar su cuenta a una cuenta Premium y tener acceso a funcionalidades tales como:");
+		lblNewLabel_8.setForeground(new Color(30, 144, 255));
+		lblNewLabel_8.setFont(new Font("Dialog", Font.BOLD, 18));
+		lblNewLabel_8.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_8);
+		
+		rigidArea_7 = Box.createRigidArea(new Dimension(20, 20));
+		content_panel.add(rigidArea_7);
+		
+		lblNewLabel_6 = new JLabel("- Ver las canciones m\u00E1s  escuchadas pulsando Canciones mas Populares");
+		lblNewLabel_6.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_6.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_6);
+		
+		lblNewLabel_7 = new JLabel("- Imprimir sus listas de reproduccion para exportarlas pulsando Imprimir Playlists");
+		lblNewLabel_7.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_7.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_7);
+		
+		lblNewLabel_9 = new JLabel("\u00A1Y mucho m\u00E1s en el futuro!");
+		lblNewLabel_9.setForeground(new Color(0, 128, 0));
+		lblNewLabel_9.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblNewLabel_9.setAlignmentX(Component.CENTER_ALIGNMENT);
+		content_panel.add(lblNewLabel_9);
+		
+		rigidArea_8 = Box.createRigidArea(new Dimension(20, 20));
+		rigidArea_8.setMaximumSize(new Dimension(20, 100));
+		content_panel.add(rigidArea_8);
+		
+		lblNewLabel_10 = new JLabel("Desarrollado por Gonzalo Nicol\u00E1s Mart\u00EDnez para la asignatura de TDS 2020-2021");
+		lblNewLabel_10.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblNewLabel_10.setIcon(new ImageIcon(Principal.class.getResource("/umu/tds/apps/images/logo-um.jpg")));
+		content_panel.add(lblNewLabel_10);
 		enablePremiumFeatures();
 	}
 	
