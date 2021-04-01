@@ -134,8 +134,8 @@ public class ControladorAppMusic {
 	
 	// Metodo para guardar una lista que haya sido creada o modificada
 	
-	public void guardarLista(ListaReproduccion lr) {
-		usuarioActual.addListaReproduccion(lr);
+	public void guardarLista(ListaReproduccion lr, ArrayList<Cancion> cancionesPlaylist) {
+		usuarioActual.addListaReproduccion(lr, cancionesPlaylist);
 		adaptadorListaReproduccion.registrarListaReproduccion(lr);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}

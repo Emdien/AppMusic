@@ -351,8 +351,7 @@ public class NuevaLista extends JPanel {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				playlist.setCanciones(cancionesPlaylist);
-				controlador.guardarLista(playlist);
+				controlador.guardarLista(playlist, cancionesPlaylist);
 				cleanFields();
 				
 				

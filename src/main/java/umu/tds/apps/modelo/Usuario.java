@@ -2,6 +2,7 @@ package umu.tds.apps.modelo;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -132,7 +133,8 @@ public class Usuario {
 	}
 
 
-	public void addListaReproduccion(ListaReproduccion lr) {
+	public void addListaReproduccion(ListaReproduccion lr, ArrayList<Cancion> cancionesPlaylist) {
+		lr.setCanciones(cancionesPlaylist);
 		this.listasReproduccion.add(lr);
 		
 	}
@@ -201,6 +203,12 @@ public class Usuario {
 	
 	public Double getPrecio() {
 		return this.descuento.calcDescuento();
+	}
+
+
+	public void addListaReproduccion(ListaReproduccion lr) {
+		this.listasReproduccion.add(lr);
+		
 	}
 	
 }
