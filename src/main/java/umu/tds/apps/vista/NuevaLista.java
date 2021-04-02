@@ -28,6 +28,8 @@ import umu.tds.apps.modelo.ListaReproduccion;
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.JComboBox;
+import java.awt.Color;
 
 public class NuevaLista extends JPanel {
 
@@ -41,7 +43,6 @@ public class NuevaLista extends JPanel {
 	
 	private JTextField txtInterprete;
 	private JTextField txtTitulo;
-	private JTextField txtEstilo;
 	private JTable tableCanciones;
 	private JTable tablePlaylist;
 	private JTextField txtNombre;
@@ -55,6 +56,7 @@ public class NuevaLista extends JPanel {
 	private JPanel panelPlaylist;
 	private JScrollPane scrollPanePlaylist;
 	private JPanel panelCommand;
+	private JComboBox comboBox;
 
 	
 	public NuevaLista(JFrame ventana) {
@@ -178,9 +180,11 @@ public class NuevaLista extends JPanel {
 		JLabel lblNewLabel_2 = new JLabel("Estilo");
 		panelBusqueda.add(lblNewLabel_2);
 		
-		txtEstilo = new JTextField();
-		panelBusqueda.add(txtEstilo);
-		txtEstilo.setColumns(10);
+		comboBox = new JComboBox(controlador.getEstilos().toArray());
+		comboBox.setBackground(Color.WHITE);
+		comboBox.setPreferredSize(new Dimension(120, 25));
+		comboBox.setMinimumSize(new Dimension(120, 25));
+		panelBusqueda.add(comboBox);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		panelBusqueda.add(rigidArea_2);
@@ -191,7 +195,7 @@ public class NuevaLista extends JPanel {
 				DefaultTableModel dtm = (DefaultTableModel) tableCanciones.getModel();
 				dtm.setRowCount(0);
 				resultadoBusqueda = new ArrayList<>();
-				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), txtEstilo.getText());				
+				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), comboBox.getSelectedItem().toString());				
 				
 				Iterator<Cancion> it = resultadoBusqueda.iterator();
 				
@@ -384,7 +388,6 @@ public class NuevaLista extends JPanel {
 		
 		txtInterprete.setText("");
 		txtTitulo.setText("");
-		txtEstilo.setText("");
 		txtNombre.setText("");
 		panelBusqueda.setVisible(false);
 		panelContenido.setVisible(false);

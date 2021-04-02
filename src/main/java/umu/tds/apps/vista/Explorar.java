@@ -25,15 +25,17 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.JComboBox;
+import java.awt.Color;
 
 public class Explorar extends JPanel {
 	private JTextField txtInterprete;
 	private JTextField txtTitulo;
-	private JTextField txtEstilo;
 	private JTable table;
 	private ControladorAppMusic controlador;
 	private ArrayList<Cancion> resultadoBusqueda = new ArrayList<>();
 	private JScrollPane scrollPane;
+	private JComboBox comboBox;
 
 	/**
 	 * Create the panel.
@@ -71,9 +73,11 @@ public class Explorar extends JPanel {
 		JLabel lblNewLabel_2 = new JLabel("Estilo");
 		panel.add(lblNewLabel_2);
 		
-		txtEstilo = new JTextField();
-		panel.add(txtEstilo);
-		txtEstilo.setColumns(10);
+		comboBox = new JComboBox(controlador.getEstilos().toArray());
+		comboBox.setBackground(Color.WHITE);
+		comboBox.setPreferredSize(new Dimension(120, 25));
+		comboBox.setMinimumSize(new Dimension(120, 25));
+		panel.add(comboBox);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		panel.add(rigidArea_2);
@@ -84,7 +88,7 @@ public class Explorar extends JPanel {
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 				dtm.setRowCount(0);  // Borra el contenido previo
 				resultadoBusqueda = new ArrayList<>();
-				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), txtEstilo.getText());	// Arreglar para que no haga casting?
+				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), comboBox.getSelectedItem().toString());	// Arreglar para que no haga casting?
 				for (Cancion c : resultadoBusqueda) {
 					//System.out.println(c.getTitulo());
 					Vector<String> v = new Vector<>(); 

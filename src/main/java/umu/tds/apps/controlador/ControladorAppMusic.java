@@ -39,6 +39,7 @@ public class ControladorAppMusic {
 	private Usuario usuarioActual; 
 	private MediaPlayer mediaPlayer;
 	private static final int MAX_RECIENTES = 10;
+	private ArrayList<String> estilos;
 
 	// Patron singleton
 	public static ControladorAppMusic getUnicaInstancia() {
@@ -48,8 +49,10 @@ public class ControladorAppMusic {
 	}
 
 	private ControladorAppMusic() {
+		estilos = new ArrayList<String>();
 		inicializarAdaptadores();
 		inicializarCatalogos();
+
 		
 		try {
 			com.sun.javafx.application.PlatformImpl.startup(() -> {
@@ -169,8 +172,6 @@ public class ControladorAppMusic {
 
 	public void loadCanciones() {
 
-		ArrayList<String> estilos = new ArrayList<String>();
-
 		String resourcePath = "E:\\AppMusic\\canciones"; // TEMPORAL - CAMBIAR EN EL FUTURO
 		// Cambiar el path a otra carpeta para que no se empaqueten las canciones con la aplicacion.
 
@@ -178,6 +179,7 @@ public class ControladorAppMusic {
 
 		File folder = new File(resourcePath);
 		for (File fileEntry : folder.listFiles()) {
+			if (!estilos.contains(fileEntry.getName()))
 			estilos.add(fileEntry.getName());
 		}
 
@@ -450,6 +452,10 @@ public class ControladorAppMusic {
 		
 		return masReproducidas;
 		
+	}
+	
+	public ArrayList<String> getEstilos() {
+		return this.estilos;
 	}
 	
 	
