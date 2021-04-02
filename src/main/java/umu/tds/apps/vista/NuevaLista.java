@@ -180,10 +180,14 @@ public class NuevaLista extends JPanel {
 		JLabel lblNewLabel_2 = new JLabel("Estilo");
 		panelBusqueda.add(lblNewLabel_2);
 		
-		comboBox = new JComboBox(controlador.getEstilos().toArray());
+		comboBox = new JComboBox();
 		comboBox.setBackground(Color.WHITE);
 		comboBox.setPreferredSize(new Dimension(120, 25));
 		comboBox.setMinimumSize(new Dimension(120, 25));
+		comboBox.addItem("");
+		for (String estilo : controlador.getEstilos()) {
+			comboBox.addItem(estilo);
+		}
 		panelBusqueda.add(comboBox);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
