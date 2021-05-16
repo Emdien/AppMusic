@@ -89,6 +89,7 @@ public class Explorar extends JPanel {
 		JButton btnNewButton = new JButton("Buscar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				table.clearSelection();
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 				dtm.setRowCount(0);  // Borra el contenido previo
 				resultadoBusqueda = new ArrayList<>();
@@ -138,9 +139,12 @@ public class Explorar extends JPanel {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
-				Cancion c = resultadoBusqueda.get(table.getSelectedRow());
-				Principal p = Principal.getInstancia();
-				p.setCurrentSong(c);
+				if (table.getSelectedRow() != -1) {
+					Cancion c = resultadoBusqueda.get(table.getSelectedRow());
+					Principal p = Principal.getInstancia();
+					p.setCurrentSong(c);
+				}
+				
 				
 			}
 		});

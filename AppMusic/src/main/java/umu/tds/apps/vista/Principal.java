@@ -143,6 +143,7 @@ public class Principal implements ActionListener{
 		btnLogout.addActionListener(this);
 		
 		luz = new Luz();
+		luz.setEncendido(false);
 		luz.addEncendidoListener(new IEncendidoListener() {
 			public void enteradoCambioEncendido(EventObject arg0) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -150,13 +151,13 @@ public class Principal implements ActionListener{
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					String songFilePath;
-					try {
+					//try {
 						songFilePath = file.getAbsolutePath();
 						controlador.setFicheroCanciones(songFilePath);
 						controlador.cargarNuevasCanciones();
-					} catch (Exception e) {
-						System.out.println("problem accessing file"+file.getAbsolutePath());
-					}
+					//} catch (Exception e) {
+						//System.out.println("problem accessing file"+file.getAbsolutePath());
+					//}
 				}
 				else {
 					System.out.println("File access canceled by user.");
@@ -164,7 +165,7 @@ public class Principal implements ActionListener{
 			}
 		});
 		luz.setColor(Color.YELLOW);
-		luz.setEncendido(true);
+		
 		header_panel.add(luz);
 		
 		rigidArea_9 = Box.createRigidArea(new Dimension(20, 20));

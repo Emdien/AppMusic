@@ -14,9 +14,10 @@ public class CargadorCanciones implements IBuscarCanciones{
 	public void setArchivoCanciones(String archivo) {
 		Canciones cancionesAnterior = this.canciones; 
 		Canciones cancionesNuevo = MapperCancionesXMLtoJava.cargarCanciones(archivo);
+		
 		this.canciones = cancionesNuevo;
 		if (!cancionesNuevo.equals(cancionesAnterior)) {
-			CancionesEvent event = new CancionesEvent(this, cancionesAnterior, cancionesNuevo);
+			CancionesEvent event = new CancionesEvent(this, cancionesNuevo, cancionesAnterior);
 			notificarCambio(event);
 		}
 		
@@ -34,8 +35,8 @@ public class CargadorCanciones implements IBuscarCanciones{
 		oyentes.remove(listener);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void notificarCambio(CancionesEvent event) {
-		
 		Vector<CancionesListener> lista;
 		synchronized (this) {
 			lista=(Vector<CancionesListener>) oyentes.clone();

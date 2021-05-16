@@ -15,7 +15,7 @@ public class MapperCancionesXMLtoJava {
 		JAXBContext jc;
 		Canciones canciones = null;
 		try {
-			jc = JAXBContext.newInstance("umu.tds.componente");
+			jc = JAXBContext.newInstance("componente");
 			Unmarshaller u = jc.createUnmarshaller();
 			File file = new File(fichero);
 			canciones = (Canciones) u.unmarshal(file);

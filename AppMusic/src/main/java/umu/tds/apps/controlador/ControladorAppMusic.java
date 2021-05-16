@@ -9,6 +9,13 @@ import umu.tds.apps.persistencia.IAdaptadorUsuarioDAO;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EventObject;
@@ -26,7 +33,10 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import componente.Canciones;
+import componente.CancionesEvent;
 import componente.CancionesListener;
+import componente.CargadorCanciones;
 
 public class ControladorAppMusic implements CancionesListener {
 
@@ -43,6 +53,11 @@ public class ControladorAppMusic implements CancionesListener {
 	private MediaPlayer mediaPlayer;
 	private static final int MAX_RECIENTES = 10;
 	private ArrayList<String> estilos;
+	
+	private Canciones nuevasCanciones;
+	private CargadorCanciones cargadorCanciones;
+	private String binPath;
+	private String tempPath;
 
 	// Patron singleton
 	public static ControladorAppMusic getUnicaInstancia() {
@@ -55,7 +70,13 @@ public class ControladorAppMusic implements CancionesListener {
 		estilos = new ArrayList<String>();
 		inicializarAdaptadores();
 		inicializarCatalogos();
+		binPath = ControladorAppMusic.class.getClassLoader().getResource(".").getPath();
+		binPath = binPath.replaceFirst("/", "");
+		// quitar "/" añadida al inicio del path en plataforma Windows
+		tempPath = binPath.replace("/bin", "/temp");
 
+		cargadorCanciones = new CargadorCanciones();
+		cargadorCanciones.addCancionesListener(this);
 		
 		try {
 			com.sun.javafx.application.PlatformImpl.startup(() -> {
@@ -231,9 +252,34 @@ public class ControladorAppMusic implements CancionesListener {
 	
 	public void reproducirCancion(Cancion c) {
 		
-		File f = new File(c.getRutaFichero());
-		Media hit = new Media(f.toURI().toString());
-		
+		Media hit = null; 
+		if (c.getRutaFichero().startsWith("http")) {
+			URL uri = null;
+			try {
+				uri = new URL(c.getRutaFichero());
+				System.setProperty("java.io.tmpdir", tempPath);
+				Path mp3 = Files.createTempFile("now-playing", ".mp3");
+
+				System.out.println(mp3.getFileName());
+				try (InputStream stream = uri.openStream()) {
+					Files.copy(stream, mp3, StandardCopyOption.REPLACE_EXISTING);
+				} 
+				System.out.println("finished-copy: " + mp3.getFileName());
+				
+				hit = new Media(mp3.toFile().toURI().toString());
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+		} else {
+			File f = new File(c.getRutaFichero());
+			hit = new Media(f.toURI().toString());
+		}
+				
 		if (mediaPlayer == null) {			// Primera vez que se reproduce una cancion
 			
 			mediaPlayer = new MediaPlayer(hit);
@@ -292,8 +338,15 @@ public class ControladorAppMusic implements CancionesListener {
 					
 				}
 			}
-		}	
+		}
+
+	
+		
 	}
+	
+	
+	
+	
 
 	// Metodo para pausar una cancion
 
@@ -302,6 +355,14 @@ public class ControladorAppMusic implements CancionesListener {
 		if (mediaPlayer != null) {
 			if (mediaPlayer.getStatus() == Status.PLAYING) {
 				mediaPlayer.pause();
+				System.out.println(tempPath);
+				File directorio = new File(tempPath);
+
+				String[] files = directorio.list();
+				for (String archivo : files) {
+				 File fichero = new File(tempPath + File.separator + archivo);
+				 fichero.delete();
+				 }
 			}
 		}
 		
@@ -314,13 +375,11 @@ public class ControladorAppMusic implements CancionesListener {
 		loadCanciones();		// Busco canciones en la carpeta, en caso de que haya nuevas canciones.
 		
 		List<Cancion> lc = getAllCanciones();
-		System.out.println("test 2 inside");
 
 		// Interprete lo he filtrado con contains en vez de contentEquals
 		// Porque como puede existir varios interpretes en una cancion
 		// Pues hago matching con la cadena de interprete
 		
-		System.out.println(lc.isEmpty());
 		
 		// Arreglar algo aqui? idk no funciona bien
 		
@@ -329,8 +388,6 @@ public class ControladorAppMusic implements CancionesListener {
 				.filter(c -> interprete.equals("") || c.getInterprete().contains(interprete)) 
 				.filter(c -> estilo.equals("") || c.getEstilo().contentEquals(estilo))
 				.collect(toList());
-		
-		System.out.println(lc.isEmpty());
 		return lc;
 	}
 
@@ -520,17 +577,25 @@ public class ControladorAppMusic implements CancionesListener {
 
 	@Override
 	public void nuevasCanciones(EventObject arg0) {
-		// TODO Auto-generated method stub
+		System.out.println("Se ha enterado xd?");
+		if (arg0 instanceof CancionesEvent) {
+			if (((CancionesEvent) arg0).getCancionesNuevas() == null) System.out.println("null xd?");
+			nuevasCanciones = ((CancionesEvent) arg0).getCancionesNuevas();
+		}
 			
 	}
 
-	public void setFicheroCanciones(String songFilePath) {
-		// TODO Auto-generated method stub
+	public void setFicheroCanciones(String pathFichero) {
+		cargadorCanciones.setArchivoCanciones(pathFichero);
 		
 	}
 
 	public void cargarNuevasCanciones() {
-		// TODO Auto-generated method stub
+		ArrayList<Cancion> canciones = (ArrayList<Cancion>) catalogoCanciones.cargarNuevasCanciones(nuevasCanciones);
+		for(Cancion c : canciones) {
+			catalogoCanciones.addCancion(c);
+			adaptadorCancion.registrarCancion(c);
+		}
 		
 	}
 

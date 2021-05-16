@@ -3,6 +3,9 @@ package umu.tds.apps.modelo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import componente.Canciones;
+
 import java.util.List;
 
 import umu.tds.apps.persistencia.DAOException;
@@ -73,6 +76,19 @@ public class CatalogoCanciones {
 		for (Cancion c : cancionesBD) {
 			canciones.put(c.getTitulo(), c);
 		}
+	}
+
+	public ArrayList<Cancion> cargarNuevasCanciones(componente.Canciones nuevasCanciones) {
+		ArrayList<Cancion> songs = new ArrayList<Cancion>();
+		for(componente.Cancion c : nuevasCanciones.getCancion()) {
+			String path = c.getURL();
+			String titulo = c.getTitulo();
+			String estilo = c.getEstilo();
+			String interpretes = c.getInterprete();
+			Cancion cancion = new Cancion(titulo, path, interpretes, estilo, 0);
+			songs.add(cancion);
+		}
+		return songs;
 	}
 	
 	
