@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -36,6 +37,9 @@ import javax.swing.ImageIcon;
 import javax.swing.border.MatteBorder;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import pulsador.Luz;
+import pulsador.IEncendidoListener;
+import java.util.EventObject;
 
 public class Principal implements ActionListener{
 	
@@ -99,6 +103,8 @@ public class Principal implements ActionListener{
 	private JLabel lblNewLabel_9;
 	private Component rigidArea_8;
 	private JLabel lblNewLabel_10;
+	private Luz luz;
+	private Component rigidArea_9;
 	
 
 
@@ -135,6 +141,35 @@ public class Principal implements ActionListener{
 		btnLogout = new JButton("Cerrar sesi\u00F3n");
 		btnLogout.setIcon(new ImageIcon(Principal.class.getResource(IMG_SRC + "Logout.png")));
 		btnLogout.addActionListener(this);
+		
+		luz = new Luz();
+		luz.addEncendidoListener(new IEncendidoListener() {
+			public void enteradoCambioEncendido(EventObject arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				int returnVal = fileChooser.showOpenDialog(frame);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+					String songFilePath;
+					try {
+						songFilePath = file.getAbsolutePath();
+						controlador.setFicheroCanciones(songFilePath);
+						controlador.cargarNuevasCanciones();
+					} catch (Exception e) {
+						System.out.println("problem accessing file"+file.getAbsolutePath());
+					}
+				}
+				else {
+					System.out.println("File access canceled by user.");
+				}
+			}
+		});
+		luz.setColor(Color.YELLOW);
+		luz.setEncendido(true);
+		header_panel.add(luz);
+		
+		rigidArea_9 = Box.createRigidArea(new Dimension(20, 20));
+		rigidArea_9.setPreferredSize(new Dimension(575, 20));
+		header_panel.add(rigidArea_9);
 		
 		lblUsuario = new JLabel();
 		lblUsuario.setText(controlador.getUsuarioActual().getNombre());

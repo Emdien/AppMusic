@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.io.File;
@@ -25,7 +26,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class ControladorAppMusic {
+import componente.CancionesListener;
+
+public class ControladorAppMusic implements CancionesListener {
 
 	private static ControladorAppMusic unicaInstancia;
 
@@ -513,6 +516,22 @@ public class ControladorAppMusic {
 			adaptadorCancion.registrarCancion(cancion);
 		}
 
+	}
+
+	@Override
+	public void nuevasCanciones(EventObject arg0) {
+		// TODO Auto-generated method stub
+			
+	}
+
+	public void setFicheroCanciones(String songFilePath) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void cargarNuevasCanciones() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
