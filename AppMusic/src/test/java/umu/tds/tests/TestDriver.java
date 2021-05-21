@@ -1,3 +1,4 @@
+package umu.tds.tests;
 import static org.junit.Assert.*;
 
 import java.util.Date;
