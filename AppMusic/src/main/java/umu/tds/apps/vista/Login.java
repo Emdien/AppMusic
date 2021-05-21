@@ -1,10 +1,8 @@
 package umu.tds.apps.vista;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -38,21 +36,6 @@ public class Login {
 	private ControladorAppMusic controlador;
 	private JLabel lblRegistrado;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login window = new Login();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -230,6 +213,11 @@ public class Login {
 	public boolean registrar(String nombre, String apellidos, Date fecha, String email, String username, String password) {
 		
 		return controlador.registrarUsuario(nombre, apellidos, fecha, email, username, password);
+	}
+
+	public void mostrarVentana() {
+		frame.setVisible(true);
+		
 	}
 	
 	
