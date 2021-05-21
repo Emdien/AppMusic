@@ -3,6 +3,7 @@ package umu.tds.apps.vista;
 import javax.swing.JPanel;
 
 import umu.tds.apps.controlador.ControladorAppMusic;
+import umu.tds.apps.modelo.Usuario;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -85,7 +86,7 @@ public class MejorarCuenta extends JPanel {
 		JLabel lblNewLabel_6 = new JLabel();
 		lblNewLabel_6.setForeground(Color.RED);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel_6.setText("Precio total: " + (10 -(10 * controlador.getUsuarioActual().getDescuento().getValorDescuento())) + "€");
+		lblNewLabel_6.setText("Precio total: " + (Usuario.getPreciobase() -(Usuario.getPreciobase() * controlador.getUsuarioActual().getDescuento().getValorDescuento())) + "€");
 		lblNewLabel_6.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lblNewLabel_6);
 		
