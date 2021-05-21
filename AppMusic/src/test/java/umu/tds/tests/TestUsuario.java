@@ -20,7 +20,6 @@ public class TestUsuario {
 	private Usuario usuario;
 	
 	/*
-	 * Constructor
 	 * getCodigo
 	 * getListasReproduccion
 	 * setListasReproduccion
@@ -34,7 +33,6 @@ public class TestUsuario {
 	 * getPrecioBase
 	 * getDescuento
 	 * realizarPago
-	 * getPrecio
 	 */
 	
 	@SuppressWarnings("deprecation")

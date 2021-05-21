@@ -95,7 +95,6 @@ public class Explorar extends JPanel {
 				resultadoBusqueda = new ArrayList<>();
 				resultadoBusqueda = (ArrayList<Cancion>) controlador.buscarCanciones(txtTitulo.getText(), txtInterprete.getText(), comboBox.getSelectedItem().toString());	// Arreglar para que no haga casting?
 				for (Cancion c : resultadoBusqueda) {
-					//System.out.println(c.getTitulo());
 					Vector<String> v = new Vector<>(); 
 					v.add(c.getTitulo());
 					v.add(c.getInterprete());
@@ -116,10 +115,7 @@ public class Explorar extends JPanel {
 		add(panel_1);
 		
 		scrollPane = new JScrollPane();
-		//scrollPane.setMaximumSize(new Dimension(400, 500));
-		//scrollPane.setMinimumSize(new Dimension(400, 500));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		//scrollPane.setPreferredSize(new Dimension(400, 500));
 		panel_1.add(scrollPane);
 		
 		table = new JTable();
@@ -133,7 +129,6 @@ public class Explorar extends JPanel {
 				"Titulo", "Interprete"
 			}
 		));
-		//table.setPreferredSize(new Dimension(400, 477));
 		scrollPane.setViewportView(table);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			

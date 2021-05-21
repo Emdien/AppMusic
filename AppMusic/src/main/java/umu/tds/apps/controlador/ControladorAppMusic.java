@@ -257,14 +257,11 @@ public class ControladorAppMusic implements CancionesListener {
 			URL uri = null;
 			try {
 				uri = new URL(c.getRutaFichero());
-				System.setProperty("java.io.tmpdir", tempPath);
 				Path mp3 = Files.createTempFile("now-playing", ".mp3");
 
-				System.out.println(mp3.getFileName());
 				try (InputStream stream = uri.openStream()) {
 					Files.copy(stream, mp3, StandardCopyOption.REPLACE_EXISTING);
 				} 
-				System.out.println("finished-copy: " + mp3.getFileName());
 				
 				hit = new Media(mp3.toFile().toURI().toString());
 			} catch (MalformedURLException e) {
@@ -302,7 +299,6 @@ public class ControladorAppMusic implements CancionesListener {
 				//addCancionReciente(c);
 			}
 			else if (mediaPlayer.getStatus() == Status.PAUSED) {
-				System.out.println("what");
 				if (mediaPlayer.getMedia().getSource().equals(hit.getSource())) {	// Compruebo si la cancion era la misma que se estaba reproduciendo
 					mediaPlayer.play();												// Si lo es, reproduzco
 					
@@ -332,11 +328,7 @@ public class ControladorAppMusic implements CancionesListener {
 					c.setNumReproducciones(c.getNumReproducciones()+1);
 					addCancionReciente(c);
 					adaptadorCancion.modificarCancion(c);
-					System.out.println("CHANGING");
-				} else {
-					System.out.println(mediaPlayer.getStatus());
-					
-				}
+				} 
 			}
 		}
 
@@ -355,7 +347,6 @@ public class ControladorAppMusic implements CancionesListener {
 		if (mediaPlayer != null) {
 			if (mediaPlayer.getStatus() == Status.PLAYING) {
 				mediaPlayer.pause();
-				System.out.println(tempPath);
 				File directorio = new File(tempPath);
 
 				String[] files = directorio.list();
@@ -461,7 +452,6 @@ public class ControladorAppMusic implements CancionesListener {
 	public boolean printPDF(String folderpath) throws DocumentException {
 		FileOutputStream archivo = null;
 		String path = folderpath + "\\" + usuarioActual.getNombre() + "_playlists.pdf";
-		System.out.println(path);
 		
 		try {
 			archivo = new FileOutputStream(path);
@@ -560,7 +550,6 @@ public class ControladorAppMusic implements CancionesListener {
 		String titulo = split[1];
 		titulo = titulo.split(".mp3")[0];
 		titulo = titulo.trim();
-		//System.out.println(titulo);
 
 		Cancion cancion = catalogoCanciones.getCancion(titulo);
 
@@ -577,9 +566,7 @@ public class ControladorAppMusic implements CancionesListener {
 
 	@Override
 	public void nuevasCanciones(EventObject arg0) {
-		System.out.println("Se ha enterado xd?");
 		if (arg0 instanceof CancionesEvent) {
-			if (((CancionesEvent) arg0).getCancionesNuevas() == null) System.out.println("null xd?");
 			nuevasCanciones = ((CancionesEvent) arg0).getCancionesNuevas();
 		}
 			

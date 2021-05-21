@@ -151,16 +151,9 @@ public class Principal implements ActionListener{
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					String songFilePath;
-					//try {
 						songFilePath = file.getAbsolutePath();
 						controlador.setFicheroCanciones(songFilePath);
 						controlador.cargarNuevasCanciones();
-					//} catch (Exception e) {
-						//System.out.println("problem accessing file"+file.getAbsolutePath());
-					//}
-				}
-				else {
-					System.out.println("File access canceled by user.");
 				}
 			}
 		});
@@ -505,7 +498,6 @@ public class Principal implements ActionListener{
 			
 			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
 				String path = chooser.getSelectedFile().getAbsolutePath();
-				System.out.println(path);
 				try {
 					controlador.printPDF(path);
 				} catch (DocumentException ev) {
