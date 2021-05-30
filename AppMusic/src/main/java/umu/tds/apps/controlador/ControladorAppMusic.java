@@ -196,27 +196,39 @@ public class ControladorAppMusic implements CancionesListener {
 
 	public void loadCanciones() {
 
-		String resourcePath = "E:\\AppMusic\\canciones"; // TEMPORAL - CAMBIAR EN EL FUTURO
-		// Cambiar el path a otra carpeta para que no se empaqueten las canciones con la aplicacion.
+		String resourcePath = "C:\\AppMusic\\canciones";
 
 		// Saco las carpetas (estilos)
 
 		File folder = new File(resourcePath);
-		for (File fileEntry : folder.listFiles()) {
-			if (!estilos.contains(fileEntry.getName()))
-			estilos.add(fileEntry.getName());
+		
+		if (folder != null) {
+			if (folder.listFiles() != null) {
+				for (File fileEntry : folder.listFiles()) {
+					if (!estilos.contains(fileEntry.getName()))
+					estilos.add(fileEntry.getName());
+				}
+			}
+			
+
+			File songFolder;
+
+			// Recorro cada carpeta y añado las canciones (si no existen ya)
+
+			for (String estilo : estilos) {
+				songFolder = new File(resourcePath + "/" + estilo);
+				
+				if (songFolder.listFiles() != null) {
+					for (File fileEntry : songFolder.listFiles())
+						loadCancionesInFolder(fileEntry, estilo);
+				}
+				
+				
+			}
+
 		}
-
-		File songFolder;
-
-		// Recorro cada carpeta y añado las canciones (si no existen ya)
-
-		for (String estilo : estilos) {
-			songFolder = new File(resourcePath + "/" + estilo);
-			for (File fileEntry : songFolder.listFiles())
-				loadCancionesInFolder(fileEntry, estilo);
-		}
-
+		
+		
 	}
 
 	// Metodo para obtener todas las canciones
@@ -588,35 +600,3 @@ public class ControladorAppMusic implements CancionesListener {
 
 }
 
-
-
-// Método para borrar una Lista de reproduccion - Version (String)
-
-/*
-  public boolean removeListaReproduccion(String nombre) {
-  
-  if(usuarioActual.removeListaReproduccion(nombre)) {
-  adaptadorListaReproduccion.borrarListaReproduccion(listaRep); } }
- */
-
-
-// Método para añadir una cancion a una Lista de reproduccion - Version (String,
-// Cancion)
-
-/*
-  public boolean addCancionToLista(String nombreLista, Cancion cancion) {
-  ListaReproduccion lr = usuarioActual.addCancionToLista(nombreLista, cancion);
-  
-  if (lr != null) { adaptadorListaReproduccion.modificarListaReproduccion(lr);
-  return true; } return false; }
-  
-  // Método para añadir una cancion a una Lista de reproduccion - Version
-  (String, String)
-  
-  public boolean addCancionToLista(String nombreLista, String nombreCancion) {
-  
-  Cancion cancion = catalogoCanciones.getCancion(nombreCancion); return
-  addCancionToLista(nombreLista, cancion);
-  
-  }
- */
